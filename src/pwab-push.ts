@@ -147,6 +147,8 @@ export class pwabpush extends LitElement {
         background: transparent;
         padding-bottom: 16px;
         width: 26em;
+
+        outline: none;
       }
 
       #projectSelect {
