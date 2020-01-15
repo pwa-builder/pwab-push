@@ -230,6 +230,24 @@ export class pwabpush extends LitElement {
         padding-right: 18px;
         margin-top: 30px;
       }
+
+      @media(max-width: 905px) {
+        #wrapper {
+          flex-direction: column;
+        }
+
+        #leftColumn .formWrapper {
+          padding-left: 0em;
+        }
+
+        #emailInput {
+          width: 20em;
+        }
+
+        #rightColumn {
+          display: none;
+        }
+      }
     `;
   }
 
