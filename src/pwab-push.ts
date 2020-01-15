@@ -248,6 +248,12 @@ export class pwabpush extends LitElement {
           display: none;
         }
       }
+
+      @media(max-width: 430px) {
+        #emailInput {
+          width: 17em;
+        }
+      }
     `;
   }
 
