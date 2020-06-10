@@ -1,10 +1,7 @@
-import {
-  LitElement, html, customElement, property, css
-} from 'lit-element';
+import { LitElement, html, customElement, property, css } from "lit-element";
 
-@customElement('pwab-push')
+@customElement("pwab-push")
 export class pwabpush extends LitElement {
-
   @property({ type: String }) swCode: string;
 
   reactCode: string = "<script>window.React</script>";
@@ -16,7 +13,7 @@ export class pwabpush extends LitElement {
       :host {
         font-family: sans-serif;
 
-        --font-color: #3C3C3C;
+        --font-color: #3c3c3c;
       }
 
       #wrapper {
@@ -58,7 +55,7 @@ export class pwabpush extends LitElement {
       #leftColumn .step {
         max-height: 5em;
         overflow: hidden;
-        transition: max-height .25s ease-in-out;
+        transition: max-height 0.25s ease-in-out;
       }
 
       #leftColumn .step.open {
@@ -96,7 +93,7 @@ export class pwabpush extends LitElement {
         font-weight: 600;
         font-size: 24px;
         line-height: 36px;
-        color: #3C3C3C;
+        color: #3c3c3c;
       }
 
       h4 {
@@ -113,7 +110,7 @@ export class pwabpush extends LitElement {
       }
 
       #emailInputWrapper button {
-        border: 1px solid #3C3C3C;
+        border: 1px solid #3c3c3c;
         border-radius: 16px;
         font-style: normal;
         font-weight: bold;
@@ -139,10 +136,10 @@ export class pwabpush extends LitElement {
         width: 26em;
       }
 
-      input[type=email] {
+      input[type="email"] {
         border: none;
         border-bottom: 1px solid rgba(60, 60, 60, 0.3);
-        color: #3C3C3C;
+        color: #3c3c3c;
 
         background: transparent;
         padding-bottom: 16px;
@@ -184,7 +181,7 @@ export class pwabpush extends LitElement {
       }
 
       .actionButtons .primaryAction {
-        background: linear-gradient(90deg, #1FC2C8 0%, #9337D8 169.8%);
+        background: linear-gradient(90deg, #1fc2c8 0%, #9337d8 169.8%);
         border-radius: 20px;
         color: white;
         border: none;
@@ -218,7 +215,7 @@ export class pwabpush extends LitElement {
       }
 
       #stepThree #sendButton {
-        background: linear-gradient(90deg, #1FC2C8 0%, #9337D8 169.8%);
+        background: linear-gradient(90deg, #1fc2c8 0%, #9337d8 169.8%);
         border-radius: 20px;
         border: none;
         color: white;
@@ -231,7 +228,7 @@ export class pwabpush extends LitElement {
         margin-top: 30px;
       }
 
-      @media(max-width: 905px) {
+      @media (max-width: 905px) {
         #wrapper {
           flex-direction: column;
         }
@@ -249,7 +246,7 @@ export class pwabpush extends LitElement {
         }
       }
 
-      @media(max-width: 430px) {
+      @media (max-width: 430px) {
         #emailInput {
           width: 17em;
         }
@@ -264,19 +261,21 @@ export class pwabpush extends LitElement {
   }
 
   openStep(step: string) {
-    const stepToOpen: HTMLDivElement = this.shadowRoot.querySelector(`#${step}`);
+    const stepToOpen: HTMLDivElement = this.shadowRoot.querySelector(
+      `#${step}`
+    );
 
-    const openedItems = this.shadowRoot.querySelectorAll('.open');
+    const openedItems = this.shadowRoot.querySelectorAll(".open");
     console.log(openedItems);
 
     if (openedItems) {
       for (let i = 0; i < openedItems.length; i++) {
         console.log(openedItems[i]);
-        openedItems[i].classList.remove('open');
+        openedItems[i].classList.remove("open");
       }
     }
 
-    stepToOpen.classList.toggle('open');
+    stepToOpen.classList.toggle("open");
   }
 
   selectProject(event) {
@@ -284,13 +283,13 @@ export class pwabpush extends LitElement {
     const value = event.target.value;
 
     switch (value) {
-      case 'angularCode':
+      case "angularCode":
         this.swCode = this.angularCode;
         break;
-      case 'reactCode':
+      case "reactCode":
         this.swCode = this.reactCode;
         break;
-      case 'vueCode':
+      case "vueCode":
         this.swCode = this.vueCode;
         break;
     }
@@ -303,40 +302,52 @@ export class pwabpush extends LitElement {
           <h3>Web Push Notifications</h3>
 
           <p id="introText">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam faucibus luctus libero sit amet sodales. 
-              Vivamus dui ex, luctus et condimentum ut, aliquam in nibh. Sed eleifend accumsan ante, sed elementum urna porttitor gravida. 
-              Quisque lobortis ut arcu ac condimentum. Proin sit amet viverra ex. Sed felis metus, malesuada sit amet dolor ac, tempus posuere felis. 
-              Praesent faucibus pretium aliquam. Suspendisse a mauris eros. 
-              Aenean malesuada tortor lectus, imperdiet mattis sem venenatis sed. 
-              Vestibulum augue tellus, ornare sit amet sapien ut, placerat vehicula dolor. 
-              Mauris at tempus purus, a aliquam sapien. Suspendisse et tempus lectus. 
-              Quisque sit amet euismod tellus. Donec a ultrices diam. Ut tempor erat nec lacus tempus, eget iaculis orci suscipit. 
-              Nullam tristique quis dolor semper sodales.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
+            faucibus luctus libero sit amet sodales. Vivamus dui ex, luctus et
+            condimentum ut, aliquam in nibh. Sed eleifend accumsan ante, sed
+            elementum urna porttitor gravida. Quisque lobortis ut arcu ac
+            condimentum. Proin sit amet viverra ex. Sed felis metus, malesuada
+            sit amet dolor ac, tempus posuere felis. Praesent faucibus pretium
+            aliquam. Suspendisse a mauris eros. Aenean malesuada tortor lectus,
+            imperdiet mattis sem venenatis sed. Vestibulum augue tellus, ornare
+            sit amet sapien ut, placerat vehicula dolor. Mauris at tempus purus,
+            a aliquam sapien. Suspendisse et tempus lectus. Quisque sit amet
+            euismod tellus. Donec a ultrices diam. Ut tempor erat nec lacus
+            tempus, eget iaculis orci suscipit. Nullam tristique quis dolor
+            semper sodales.
           </p>
 
           <div id="instructionsList">
             <div class="step open" id="stepOne">
-
-              <div class="stepTextWrapper"  @click="${() => this.openStep('stepOne')}">
-                <img src="/Images/server.png">
+              <div
+                class="stepTextWrapper"
+                @click="${() => this.openStep("stepOne")}"
+              >
+                <img src="/Images/server.png" />
 
                 <h4><span class="stepText">Step 1:</span> Setup server Side</h4>
               </div>
 
               <div class="formWrapper">
                 <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam faucibus luctus libero sit amet sodales. 
-                Vivamus dui ex, luctus et condimentum ut, aliquam in nibh. Sed eleifend accumsan ante, sed elementum urna porttitor gravida. 
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
+                  faucibus luctus libero sit amet sodales. Vivamus dui ex,
+                  luctus et condimentum ut, aliquam in nibh. Sed eleifend
+                  accumsan ante, sed elementum urna porttitor gravida.
                 </p>
 
                 <div id="emailInputWrapper">
-
                   <div id="emailInputLabel">
                     <label for="emailInput">
                       Email:
                     </label>
 
-                    <input type="email" id="emailInput" name="emailInput" placeholder="janedoe@something.com">
+                    <input
+                      type="email"
+                      id="emailInput"
+                      name="emailInput"
+                      placeholder="janedoe@something.com"
+                    />
                   </div>
 
                   <button id="emailButton">Add Email</button>
@@ -344,46 +355,60 @@ export class pwabpush extends LitElement {
 
                 <div class="actionsBlock">
                   <h5>Generate Vapid Keys</h5>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
 
                   <h5>Registration</h5>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
 
                   <h5>Email Confirmation</h5>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
 
                   <div class="actionButtons">
                     <button class="primaryAction">
-                      Generate and Regsiter VAPID Keys
+                      Generate and Register VAPID Keys
                     </button>
                   </div>
                 </div>
               </div>
-            </div> 
+            </div>
 
             <div class="step" id="stepTwo">
-              <div @click="${() => this.openStep('stepTwo')}" class="stepTextWrapper">
-                <img src="/Images/client.png">
+              <div
+                @click="${() => this.openStep("stepTwo")}"
+                class="stepTextWrapper"
+              >
+                <img src="/Images/client.png" />
 
                 <h4><span class="stepText">Step 2:</span> Setup client Side</h4>
               </div>
 
               <div class="formWrapper">
                 <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam faucibus luctus libero sit amet sodales. 
-                Vivamus dui ex, luctus et condimentum ut, aliquam in nibh. Sed eleifend accumsan ante, sed elementum urna porttitor gravida. 
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
+                  faucibus luctus libero sit amet sodales. Vivamus dui ex,
+                  luctus et condimentum ut, aliquam in nibh. Sed eleifend
+                  accumsan ante, sed elementum urna porttitor gravida.
                 </p>
 
                 <p>Please select a project type:</p>
 
                 <div id="emailInputWrapper">
                   <div id="emailInputLabel">
-
                     <label for="projectSelect">
                       Project Type:
                     </label>
 
-                    <select @change="${(event) => this.selectProject(event)}" id="projectSelect" name="projectSelect">
+                    <select
+                      @change="${(event) => this.selectProject(event)}"
+                      id="projectSelect"
+                      name="projectSelect"
+                    >
                       <option value="reactCode">React</option>
                       <option value="vueCode">Vue</option>
                       <option value="angularCode">Angular</option>
@@ -393,7 +418,7 @@ export class pwabpush extends LitElement {
 
                 <div class="actionsBlock">
                   <h5>Add this code to your project</h5>
-                  
+
                   <code>
                     ${this.swCode}
                   </code>
@@ -402,21 +427,30 @@ export class pwabpush extends LitElement {
             </div>
 
             <div class="step" id="stepThree">
-              <div @click="${() => this.openStep('stepThree')}" class="stepTextWrapper">
-                <img src="/Images/test.png">
+              <div
+                @click="${() => this.openStep("stepThree")}"
+                class="stepTextWrapper"
+              >
+                <img src="/Images/test.png" />
 
-                <h4><span class="stepText">Step 3:</span> Send test notification</h4>
+                <h4>
+                  <span class="stepText">Step 3:</span> Send test notification
+                </h4>
               </div>
 
               <div class="formWrapper">
                 <div id="stepThreeActions" class="actionsBlock">
-
                   <div id="emailInputLabel">
                     <label for="titleInput">
                       Notification title
                     </label>
 
-                    <input type="text" id="titleInput" name="titleInput" placeholder="notification title">
+                    <input
+                      type="text"
+                      id="titleInput"
+                      name="titleInput"
+                      placeholder="notification title"
+                    />
                   </div>
 
                   <div id="emailInputLabel">
@@ -424,19 +458,24 @@ export class pwabpush extends LitElement {
                       Notification body
                     </label>
 
-                    <input type="text" id="bodyInput" name="bodyInput" placeholder="notification body">
+                    <input
+                      type="text"
+                      id="bodyInput"
+                      name="bodyInput"
+                      placeholder="notification body"
+                    />
                   </div>
                 </div>
 
                 <button id="sendButton">Send Notification</button>
+              </div>
             </div>
-          </div>
           </div>
         </section>
 
         <section id="rightColumn">
-          <img src="/Images/top.png">
-          <img src="/Images/bottom.png">
+          <img src="/Images/top.png" />
+          <img src="/Images/bottom.png" />
         </section>
       </div>
     `;
