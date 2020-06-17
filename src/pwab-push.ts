@@ -8,7 +8,7 @@ export class pwabpush extends LitElement {
 
   @property({ type: String }) notificationTitle: string = "";
   @property({ type: String }) notificationBody: string = "";
-
+  @property({ type: String }) notificationIcon: string = "";
 
   baseUrl: string = "http://localhost:3333"; // local
   // baseUrl: string = "https://pwabuilder-api-pre.azurewebsites.net"; // dev
@@ -306,7 +306,7 @@ export class pwabpush extends LitElement {
   }
 
   addEmail() {
-
+    console.log("addEmail()");
   }
 
   async emailVapidKeys() {
@@ -330,14 +330,15 @@ export class pwabpush extends LitElement {
 
   async sendNotification() {
     try {
-      const notificationBody = {
-
-      };
-      const response: PwabNotificationResponse = await fetch(this.baseUrl + "", {
-        method: "POST",
-        headers: {},
-        body: JSON.stringify(notificationBody),
-      }).then((res) => res.json());
+      const notificationBody = {};
+      const response: PwabNotificationResponse = await fetch(
+        this.baseUrl + "",
+        {
+          method: "POST",
+          headers: {},
+          body: JSON.stringify(notificationBody),
+        }
+      ).then((res) => res.json());
     } catch (e) {
       // TODO
     }
@@ -399,10 +400,7 @@ export class pwabpush extends LitElement {
                     />
                   </div>
 
-                  <button
-                    id="emailButton"
-                    @click="${() => this.addEmail()}"
-                  >
+                  <button id="emailButton" @click="${() => this.addEmail()}">
                     Add Email
                   </button>
                 </div>
@@ -507,7 +505,7 @@ export class pwabpush extends LitElement {
                       id="titleInput"
                       name="titleInput"
                       placeholder="notification title"
-                      .value="${}"
+                      .value="${this.notificationTitle}"
                     />
                   </div>
 
@@ -521,7 +519,20 @@ export class pwabpush extends LitElement {
                       id="bodyInput"
                       name="bodyInput"
                       placeholder="notification body"
-                      .value="${}"
+                      .value="${this.notificationBody}"
+                    />
+                  </div>
+
+                  <div id="emailInputLabel">
+                    <label for="icon-url-input">
+                      Icon path for the badge notification
+                    </label>
+                    <input
+                      type="text"
+                      id="iconUrlInput"
+                      name="icon-url-input"
+                      placeholder="https://www.example/images/icon.png"
+                      .value="${this.notificationIcon}"
                     />
                   </div>
                 </div>
