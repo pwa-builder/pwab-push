@@ -1,8 +1,18 @@
 import { LitElement, html, customElement, property, css } from "lit-element";
+import { PwabVapidResponse, PwabNotificationResponse } from "./pwab-types";
 
 @customElement("pwab-push")
 export class pwabpush extends LitElement {
   @property({ type: String }) swCode: string;
+  @property({ type: String }) userEmail: string = "";
+
+  @property({ type: String }) notificationTitle: string = "";
+  @property({ type: String }) notificationBody: string = "";
+
+
+  baseUrl: string = "http://localhost:3333"; // local
+  // baseUrl: string = "https://pwabuilder-api-pre.azurewebsites.net"; // dev
+  // baseUrl: string = "https://pwabuilder-api-prod.azurewebsites.net"; // pwabuilder.com
 
   reactCode: string = "<script>window.React</script>";
   angularCode: string = "<script>window.Angular</script>";
@@ -295,6 +305,44 @@ export class pwabpush extends LitElement {
     }
   }
 
+  addEmail() {
+
+  }
+
+  async emailVapidKeys() {
+    // TODO get vapid keys using fetch api
+    try {
+      const response: PwabVapidResponse = await fetch(
+        this.baseUrl + ""
+      ).then((res) => res.json());
+
+      const { privateKey, publicKey } = response.keys;
+      const subject = `PWA Builder VAPID Key Info`;
+      const body = `Here is the VAPID key you genererated for your PWA app at https://www.pwabuilder.com\nprivateKey:${privateKey}\npublicKey:${publicKey}\nsubject:${this.userEmail}\n`;
+
+      window.open(
+        encodeURI(`mailto:${this.userEmail}?subject=${subject}&body=${body}`)
+      );
+    } catch (e) {
+      // TODO how should we show errors :P
+    }
+  }
+
+  async sendNotification() {
+    try {
+      const notificationBody = {
+
+      };
+      const response: PwabNotificationResponse = await fetch(this.baseUrl + "", {
+        method: "POST",
+        headers: {},
+        body: JSON.stringify(notificationBody),
+      }).then((res) => res.json());
+    } catch (e) {
+      // TODO
+    }
+  }
+
   render() {
     return html`
       <div id="wrapper">
@@ -347,10 +395,16 @@ export class pwabpush extends LitElement {
                       id="emailInput"
                       name="emailInput"
                       placeholder="janedoe@something.com"
+                      .value=${this.userEmail}
                     />
                   </div>
 
-                  <button id="emailButton">Add Email</button>
+                  <button
+                    id="emailButton"
+                    @click="${() => this.addEmail()}"
+                  >
+                    Add Email
+                  </button>
                 </div>
 
                 <div class="actionsBlock">
@@ -370,7 +424,10 @@ export class pwabpush extends LitElement {
                   </p>
 
                   <div class="actionButtons">
-                    <button class="primaryAction">
+                    <button
+                      class="primaryAction"
+                      @click="${() => this.emailVapidKeys()}"
+                    >
                       Generate and Register VAPID Keys
                     </button>
                   </div>
@@ -450,6 +507,7 @@ export class pwabpush extends LitElement {
                       id="titleInput"
                       name="titleInput"
                       placeholder="notification title"
+                      .value="${}"
                     />
                   </div>
 
@@ -463,11 +521,17 @@ export class pwabpush extends LitElement {
                       id="bodyInput"
                       name="bodyInput"
                       placeholder="notification body"
+                      .value="${}"
                     />
                   </div>
                 </div>
 
-                <button id="sendButton">Send Notification</button>
+                <button
+                  id="sendButton"
+                  @click="${() => this.sendNotification()}"
+                >
+                  Send Notification
+                </button>
               </div>
             </div>
           </div>
