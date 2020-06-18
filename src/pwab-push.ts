@@ -1,5 +1,9 @@
 import { LitElement, html, customElement, property, css } from "lit-element";
-import { PwabVapidResponse, PwabNotificationResponse } from "./pwab-types";
+import {
+  PwabVapidResponse,
+  PwabNotificationResponse,
+  VapidKeys,
+} from "./pwab-types";
 
 @customElement("pwab-push")
 export class pwabpush extends LitElement {
@@ -12,7 +16,7 @@ export class pwabpush extends LitElement {
 
   baseUrl: string = "http://localhost:3333"; // local
   // baseUrl: string = "https://pwabuilder-api-pre.azurewebsites.net"; // dev
-  // baseUrl: string = "https://pwabuilder-api-prod.azurewebsites.net"; // pwabuilder.com
+  // baseUrl: string = "https://pwabuilder-api-prod.azurewebsites.net"; // production
 
   reactCode: string = "<script>window.React</script>";
   angularCode: string = "<script>window.Angular</script>";
@@ -309,23 +313,45 @@ export class pwabpush extends LitElement {
     console.log("addEmail()");
   }
 
-  async emailVapidKeys() {
-    // TODO get vapid keys using fetch api
+  async clickGenerateAndRegisterButton() {
     try {
-      const response: PwabVapidResponse = await fetch(
-        this.baseUrl + ""
-      ).then((res) => res.json());
-
-      const { privateKey, publicKey } = response.keys;
-      const subject = `PWA Builder VAPID Key Info`;
-      const body = `Here is the VAPID key you genererated for your PWA app at https://www.pwabuilder.com\nprivateKey:${privateKey}\npublicKey:${publicKey}\nsubject:${this.userEmail}\n`;
-
-      window.open(
-        encodeURI(`mailto:${this.userEmail}?subject=${subject}&body=${body}`)
-      );
+      const vapidKeys = await this.createVapidKeys();
+      await this.registerKeys(vapidKeys);
+      this.emailVapidKeys(vapidKeys);
     } catch (e) {
-      // TODO how should we show errors :P
+      console.log("something failed, please try again");
     }
+  }
+
+  async createVapidKeys(): Promise<VapidKeys> {
+    const { keys }: PwabVapidResponse = await fetch(
+      this.baseUrl + "/create"
+    ).then((res) => res.json());
+
+    return {
+      ...keys,
+    };
+  }
+
+  async registerKeys(vapidKeys: VapidKeys) {
+    const response = await fetch(this.baseUrl + "/register", {
+      method: "POST",
+      body: JSON.stringify({
+        userEmail: this.userEmail,
+        ...vapidKeys,
+      }),
+    }).then((res) => res.json());
+
+    return response;
+  }
+
+  emailVapidKeys(vapidKeys: VapidKeys) {
+    const subject = `PWA Builder VAPID Key Info`;
+    const body = `Here is the VAPID key you genererated for your PWA app at https://www.pwabuilder.com\nprivateKey:${privateKey}\npublicKey:${publicKey}\nsubject:${this.userEmail}\n`;
+
+    window.open(
+      encodeURI(`mailto:${this.userEmail}?subject=${subject}&body=${body}`)
+    );
   }
 
   async sendNotification() {
@@ -424,7 +450,7 @@ export class pwabpush extends LitElement {
                   <div class="actionButtons">
                     <button
                       class="primaryAction"
-                      @click="${() => this.emailVapidKeys()}"
+                      @click="${() => this.clickGenerateAndRegisterButton()}"
                     >
                       Generate and Register VAPID Keys
                     </button>
