@@ -14,6 +14,8 @@ export class pwabpush extends LitElement {
   @property({ type: String }) notificationBody: string = "";
   @property({ type: String }) notificationIcon: string = "";
 
+  vapidKeys: VapidKeys;
+
   baseUrl: string = "http://localhost:3333"; // local
   // baseUrl: string = "https://pwabuilder-api-pre.azurewebsites.net"; // dev
   // baseUrl: string = "https://pwabuilder-api-prod.azurewebsites.net"; // production
@@ -315,9 +317,9 @@ export class pwabpush extends LitElement {
 
   async clickGenerateAndRegisterButton() {
     try {
-      const vapidKeys = await this.createVapidKeys();
-      await this.registerKeys(vapidKeys);
-      this.emailVapidKeys(vapidKeys);
+      this.vapidKeys = await this.createVapidKeys();
+      await this.registerKeys();
+      this.emailVapidKeys();
     } catch (e) {
       console.log("something failed, please try again");
     }
@@ -333,21 +335,21 @@ export class pwabpush extends LitElement {
     };
   }
 
-  async registerKeys(vapidKeys: VapidKeys) {
+  async registerKeys() {
     const response = await fetch(this.baseUrl + "/register", {
       method: "POST",
       body: JSON.stringify({
         userEmail: this.userEmail,
-        ...vapidKeys,
+        ...this.vapidKeys,
       }),
     }).then((res) => res.json());
 
     return response;
   }
 
-  emailVapidKeys(vapidKeys: VapidKeys) {
+  emailVapidKeys() {
     const subject = `PWA Builder VAPID Key Info`;
-    const body = `Here is the VAPID key you genererated for your PWA app at https://www.pwabuilder.com\nprivateKey:${privateKey}\npublicKey:${publicKey}\nsubject:${this.userEmail}\n`;
+    const body = `Here is the VAPID key you generated for your PWA app at https://www.pwabuilder.com\nprivateKey:${this.vapidKeys.privateKey}\npublicKey:${this.vapidKeys.publicKey}\nsubject:${this.userEmail}\n`;
 
     window.open(
       encodeURI(`mailto:${this.userEmail}?subject=${subject}&body=${body}`)
@@ -356,13 +358,15 @@ export class pwabpush extends LitElement {
 
   async sendNotification() {
     try {
-      const notificationBody = {};
       const response: PwabNotificationResponse = await fetch(
-        this.baseUrl + "",
+        this.baseUrl + "/send",
         {
           method: "POST",
           headers: {},
-          body: JSON.stringify(notificationBody),
+          body: JSON.stringify({
+            ...this.vapidKeys,
+            subject: this.userEmail,
+          }),
         }
       ).then((res) => res.json());
     } catch (e) {
