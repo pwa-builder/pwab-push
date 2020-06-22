@@ -3,7 +3,9 @@ import {
   PwabVapidResponse,
   PwabNotificationResponse,
   VapidKeys,
+  NotificationOptions,
 } from "./pwab-types";
+import * as sampleCode from "./pwab-code";
 
 @customElement("pwab-push")
 export class pwabpush extends LitElement {
@@ -20,9 +22,10 @@ export class pwabpush extends LitElement {
   // baseUrl: string = "https://pwabuilder-api-pre.azurewebsites.net"; // dev
   // baseUrl: string = "https://pwabuilder-api-prod.azurewebsites.net"; // production
 
-  reactCode: string = "<script>window.React</script>";
-  angularCode: string = "<script>window.Angular</script>";
-  vueCode: string = "<script>window.Vue</script>";
+  vanillaCode: string = sampleCode.vanilla;
+  reactCode: string = sampleCode.react;
+  angularCode: string = sampleCode.angular;
+  vueCode: string = sampleCode.vue;
 
   static get styles() {
     return css`
@@ -308,6 +311,8 @@ export class pwabpush extends LitElement {
       case "vueCode":
         this.swCode = this.vueCode;
         break;
+      case "vanilla JS":
+        this.swCode = this.vanillaCode;
     }
   }
 
@@ -366,11 +371,26 @@ export class pwabpush extends LitElement {
           body: JSON.stringify({
             ...this.vapidKeys,
             subject: this.userEmail,
+            notification: JSON.stringify({
+              ...NotificationOptions,
+              title:
+                this.notificationTitle !== ""
+                  ? this.notificationTitle
+                  : NotificationOptions.title,
+              body:
+                this.notificationBody !== ""
+                  ? this.notificationBody
+                  : NotificationOptions.body,
+              icon:
+                this.notificationIcon !== ""
+                  ? this.notificationIcon
+                  : NotificationOptions.icon,
+            }),
           }),
         }
       ).then((res) => res.json());
     } catch (e) {
-      // TODO
+      console.log("failed to send notification");
     }
   }
 
@@ -497,6 +517,7 @@ export class pwabpush extends LitElement {
                       <option value="reactCode">React</option>
                       <option value="vueCode">Vue</option>
                       <option value="angularCode">Angular</option>
+                      <option value="vanillaCode">Vanilla JS</option>
                     </select>
                   </div>
                 </div>
