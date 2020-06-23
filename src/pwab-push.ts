@@ -6,6 +6,7 @@ import {
   NotificationOptions,
 } from "./pwab-types";
 import * as sampleCode from "./pwab-code";
+import * as utils from "./pwab-utils";
 
 @customElement("pwab-push")
 export class pwabpush extends LitElement {
@@ -311,7 +312,7 @@ export class pwabpush extends LitElement {
       case "vueCode":
         this.swCode = this.vueCode;
         break;
-      case "vanilla JS":
+      case "vanillaCode":
         this.swCode = this.vanillaCode;
     }
   }
