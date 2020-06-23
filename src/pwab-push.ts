@@ -352,6 +352,34 @@ export class pwabpush extends LitElement {
     return response;
   }
 
+  async subscribe() {
+    var registration = await navigator.serviceWorker.register(
+      "pwabuilder-sw.js",
+      {
+        scope: "./",
+      }
+    );
+
+    var subscription = await registration.pushManager.getSubscription();
+
+    if (!subscription) {
+      const vapidPublicKey = document.getElementById("publicKeyText").value;
+      const convertedVapidKey = utils.urlBase64ToUint8Array(vapidPublicKey);
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: convertedVapidKey,
+      });
+
+      const response = await fetch(this.baseUrl + "/subscribe", {
+        method: "POST",
+        body: JSON.stringify({
+          subscription: subscription,
+          publicKeys: this.vapidKeys.publicKey,
+        }),
+      }).then((res) => res.json());
+    }
+  }
+
   emailVapidKeys() {
     const subject = `PWA Builder VAPID Key Info`;
     const body = `Here is the VAPID key you generated for your PWA app at https://www.pwabuilder.com\nprivateKey:${this.vapidKeys.privateKey}\npublicKey:${this.vapidKeys.publicKey}\nsubject:${this.userEmail}\n`;
