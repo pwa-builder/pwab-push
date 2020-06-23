@@ -363,8 +363,9 @@ export class pwabpush extends LitElement {
     var subscription = await registration.pushManager.getSubscription();
 
     if (!subscription) {
-      const vapidPublicKey = document.getElementById("publicKeyText").value;
-      const convertedVapidKey = utils.urlBase64ToUint8Array(vapidPublicKey);
+      const convertedVapidKey = utils.urlBase64ToUint8Array(
+        this.vapidKeys.publicKey
+      );
       subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: convertedVapidKey,
