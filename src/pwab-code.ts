@@ -8,13 +8,6 @@ export const vanilla = `
   });
 
 
-
-
-
-
-
-
-
 <script>
   var publicKey = "the cryptographic hash emailed from above!";
   var privateKey = "";
@@ -146,12 +139,14 @@ export const angular = `<script>
   angular
 </script>`;
 
-export const vue = `<script>
-  vue
-</script>`;
+export const vue = `
+
+
+
+`;
 
 export const subscribeUser = `
-// Add these functions to prompt the user to subscribe to the pwabuilder push notification server.
+// Add these functions to prompt the user to subscribe to the pwabuilder push notification server
 async function subscribeUser() {
   try {
     const vapidPublicKey = ""; // get public key here
@@ -204,6 +199,9 @@ function urlBase64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+
+// omit if you want to control when you prompt the user to subscribe
+subscribeUser();
 `;
 
 export const landingScript = `
