@@ -428,17 +428,17 @@ export class pwabpush extends LitElement {
   }
 
   firstUpdated(changed) {
+    // TODO move this code
     console.log("first updated", changed);
     console.log(this.shadowRoot.getElementById("clientCode"));
-    console.log(
-      window.monaco.editor.create(
-        this.shadowRoot.getElementById("clientCode"),
-        {
-          value: this.swCode,
-          language: "javascript",
-        }
-      )
+    this.monacoEditor = window.monaco.editor.create(
+      this.shadowRoot.getElementById("clientCode"),
+      {
+        value: this.swCode,
+        language: "javascript",
+      }
     );
+    console.log(this.monacoEditor);
 
     super.firstUpdated(changed);
   }
@@ -578,6 +578,7 @@ export class pwabpush extends LitElement {
                   <code>
                     ${this.swCode}
                   </code>
+                  <div id="clientCode" style="display: none;"></div>
                 </div>
               </div>
             </div>
