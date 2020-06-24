@@ -17,6 +17,9 @@ export class pwabpush extends LitElement {
   @property({ type: String }) notificationBody: string = "";
   @property({ type: String }) notificationIcon: string = "";
 
+  @property({ type: String }) editorText: string = "";
+
+  monacoEditor: HTMLElement;
   vapidKeys: VapidKeys;
 
   baseUrl: string = "http://localhost:3333"; // local
@@ -424,6 +427,22 @@ export class pwabpush extends LitElement {
     }
   }
 
+  firstUpdated(changed) {
+    console.log("first updated", changed);
+    console.log(this.shadowRoot.getElementById("clientCode"));
+    console.log(
+      window.monaco.editor.create(
+        this.shadowRoot.getElementById("clientCode"),
+        {
+          value: this.swCode,
+          language: "javascript",
+        }
+      )
+    );
+
+    super.firstUpdated(changed);
+  }
+
   render() {
     return html`
       <div id="wrapper">
@@ -555,6 +574,7 @@ export class pwabpush extends LitElement {
                 <div class="actionsBlock">
                   <h5>Add this code to your project</h5>
 
+                  <!-- TODO use monaco properly here... wrap monaco in a WC and do this -->
                   <code>
                     ${this.swCode}
                   </code>
