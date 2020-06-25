@@ -49,6 +49,16 @@ export class pwabmonaco extends LitElement {
 
   updated(changedProperties) {}
 
+  connectedCallback() {
+    super.connectedCallback();
+    (<any>window).addEventListener("resize", this.onResize);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    (<any>window).removeEventListener("resize", this.onResize);
+  }
+
   codeHeader() {
     const copyButton = this.showCopyButton
       ? html`<button @click="${() => this.copy()}" class="copyButton">
