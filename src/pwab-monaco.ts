@@ -34,7 +34,7 @@ export default class pwabmonaco extends LitElement {
   errors: any[] = [];
 
   monacoOptions = {
-    codeType: "javascript",
+    language: "javascript",
     value: this.code,
     lineNumbers: "on",
     fixedOverflowWidgets: true,
@@ -76,7 +76,7 @@ export default class pwabmonaco extends LitElement {
 
   firstUpdated(changedProperties) {
     const container = this.shadowRoot.getElementById("");
-    this.editor = (<any>window).monaco.editor.create(container, {
+    this.editor = (window as any).monaco.editor.create(container, {
       ...this.monacoOptions,
     });
   }
@@ -85,12 +85,12 @@ export default class pwabmonaco extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    (<any>window).addEventListener("resize", this.onResize);
+    (window as any).addEventListener("resize", this.onResize);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    (<any>window).removeEventListener("resize", this.onResize);
+    (window as any).removeEventListener("resize", this.onResize);
   }
 
   codeHeader() {
@@ -166,6 +166,7 @@ export default class pwabmonaco extends LitElement {
       }, 1300);
     } catch (err) {
       console.error(err);
+      // TODO display error
     }
   }
 
@@ -192,15 +193,15 @@ export default class pwabmonaco extends LitElement {
   reloadEditor() {
     if (!this.monacoId) return;
 
-    this.editor = (<any>window).monaco.editor.create(
+    this.editor = (window as any).monaco.editor.create(
       this.shadowRoot.getElementById(this.monacoId),
-      {}
+      this.monacoOptions
     );
     this.defineTheme();
   }
 
   defineTheme() {
-    (<any>window).monaco.editor.defineTheme(`${this.theme}Theme`, {
+    (window as any).monaco.editor.defineTheme(`${this.theme}Theme`, {
       base: "vs",
       inherit: true,
       rules: [],
@@ -208,12 +209,29 @@ export default class pwabmonaco extends LitElement {
         "editor.background": this.color,
       },
     });
-    (<any>window).monaco.editor.setTheme("lighterTheme");
+    (window as any).monaco.editor.setTheme("lighterTheme");
   }
 
-  onCodeChange() {}
+  onCodeChange() {
+    // TODO emit event? not 100% sure if needed
 
-  onDecorationsChange() {}
+    console.log("onCodeChange", arguments);
+    // this.$emit("editorValue", this.code);
+  }
 
-  editorMount() {}
+  onDecorationsChange() {
+    console.log("onDecorationsChange", arguments);
+    this.errors = (window as any).monaco.editor.getModelMarkers({});
+
+    if (this.errors.length > 0) {
+      // this.$emit("invalidManifest");
+    }
+  }
+
+  editorMount() {
+    console.log("editorMount", arguments);
+    // this.editor = editor; // TODO ????
+
+    // console.log("editor mount", editor);
+  }
 }
