@@ -157,37 +157,15 @@ export default class pwabmonaco extends LitElement {
   async copy() {
     const code = this.editor.getValue();
 
-    if ((navigator as any).clipboard) {
-      try {
-        await (navigator as any).clipboard.writeText(code);
-        this.textCopied = true;
+    try {
+      await (navigator as any).clipboard.writeText(code);
+      this.textCopied = true;
 
-        setTimeout(() => {
-          this.textCopied = false;
-        }, 1300);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      let clipboard = new Clipboard(code);
-
-      clipboard.on("success", (e) => {
-        console.info("Action:", e.action);
-        console.info("Text:", e.text);
-        console.info("Trigger:", e.trigger);
-
-        this.textCopied = true;
-
-        setTimeout(() => {
-          this.textCopied = false;
-        }, 1300);
-        e.clearSelection();
-      });
-
-      clipboard.on("error", (e) => {
-        console.error("Action:", e.action);
-        console.error("Trigger:", e.trigger);
-      });
+      setTimeout(() => {
+        this.textCopied = false;
+      }, 1300);
+    } catch (err) {
+      console.error(err);
     }
   }
 
