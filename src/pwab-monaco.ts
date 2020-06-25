@@ -1,18 +1,24 @@
-import { LitElement, html, customElement, property, css } from "lit-element";
+import { html, customElement, property, css, LitElement } from "lit-element";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
 
 @customElement("pwab-monaco")
-export class pwabmonaco extends LitElement {
+export default class pwabmonaco extends LitElement {
   // TODO start chunking away the basic behavior of monaco and have it listen to changes from the parent.
 
   @property({ type: String })
   public monacoId: string;
 
   @property({ type: String })
+  theme: string = "lighter";
+
+  @property({ type: String })
   public code: string;
 
   @property({ type: Boolean })
   public showCopyButton;
+
+  @property({ type: String })
+  public color = "#F0F0F0";
 
   @property({ type: Boolean })
   showToolbar: boolean = false;
@@ -27,16 +33,39 @@ export class pwabmonaco extends LitElement {
 
   errors: any[] = [];
 
-  // @property({ type: String })
-  // public
+  monacoOptions = {
+    codeType: "javascript",
+    value: this.code,
+    lineNumbers: "on",
+    fixedOverflowWidgets: true,
+    wordWrap: "on",
+    // wordWrap: "wordWrapColumn",
+    // wordWrapColumn: 50,
+    scrollBeyondLastLine: false,
+    wordWrapMinified: true,
+    wrappingIndent: "indent",
+    fontSize: 16,
+    minimap: {
+      enabled: false,
+    },
+    onCodeChange: this.onCodeChange, // TODO
+    onDidChangeModelDecorations: this.onDecorationsChange, // TODO
+    editorDidMount: this.editorMount, // TODO
+  };
 
   constructor() {
     super();
   }
 
+  static get observedAttributes() {
+    return ["showToolbar", "theme"];
+  }
+
   static get style() {
     return css``;
   }
+
+  // TODO make a function create the monacoOptions and a function to create the theme options
 
   render() {
     return html`<div>
@@ -45,7 +74,12 @@ export class pwabmonaco extends LitElement {
     </div>`;
   }
 
-  firstUpdated(changedProperties) {}
+  firstUpdated(changedProperties) {
+    const container = this.shadowRoot.getElementById("");
+    this.editor = (<any>window).monaco.editor.create(container, {
+      ...this.monacoOptions,
+    });
+  }
 
   updated(changedProperties) {}
 
@@ -76,13 +110,11 @@ export class pwabmonaco extends LitElement {
     </div>`;
   }
 
-  // TODO
   overlay() {
     if (!this.showOverlay) return;
 
     return html`<div id="errorOverlay">
       <h2>Errors</h2>
-
       <ul>
         ${this.errors.map(
           (error) =>
@@ -101,10 +133,10 @@ export class pwabmonaco extends LitElement {
     </div>`;
   }
 
-  // TODO
   toolbar() {
     if (!this.showToolbar) return;
-    return html` <div id="toolbar">
+
+    return html`<div id="toolbar">
       <div v-if="errorNumber">
         <button @click="${() => this.showErrorOverlay()}" id="errorsButton">
           <i class="fas fa-exclamation-triangle"></i>
@@ -159,9 +191,51 @@ export class pwabmonaco extends LitElement {
     }
   }
 
-  // TODO
-  showErrorOverlay() {}
+  showErrorOverlay() {
+    this.showOverlay = !this.showOverlay;
+  }
 
-  // TODO
-  closeOverlay() {}
+  closeOverlay() {
+    this.showOverlay = false;
+  }
+
+  onResize() {
+    this.removeEditor();
+    this.reloadEditor();
+  }
+
+  removeEditor() {
+    var item = this.monacoId && this.shadowRoot.getElementById(this.monacoId);
+    while (item && item.hasChildNodes()) {
+      item.firstChild && item.removeChild(item.firstChild);
+    }
+  }
+
+  reloadEditor() {
+    if (!this.monacoId) return;
+
+    this.editor = (<any>window).monaco.editor.create(
+      this.shadowRoot.getElementById(this.monacoId),
+      {}
+    );
+    this.defineTheme();
+  }
+
+  defineTheme() {
+    (<any>window).monaco.editor.defineTheme(`${this.theme}Theme`, {
+      base: "vs",
+      inherit: true,
+      rules: [],
+      colors: {
+        "editor.background": this.color,
+      },
+    });
+    (<any>window).monaco.editor.setTheme("lighterTheme");
+  }
+
+  onCodeChange() {}
+
+  onDecorationsChange() {}
+
+  editorMount() {}
 }
