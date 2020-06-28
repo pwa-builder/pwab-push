@@ -7,6 +7,7 @@ import {
 } from "./pwab-types";
 import * as sampleCode from "./pwab-code";
 import * as utils from "./pwab-utils";
+import "./pwab-monaco";
 
 @customElement("pwab-push")
 export class pwabpush extends LitElement {
@@ -19,12 +20,11 @@ export class pwabpush extends LitElement {
 
   @property({ type: String }) editorText: string = "";
 
-  monacoEditor: HTMLElement;
   vapidKeys: VapidKeys;
 
-  baseUrl: string = "http://localhost:3333"; // local
-  // baseUrl: string = "https://pwabuilder-api-pre.azurewebsites.net"; // dev
-  // baseUrl: string = "https://pwabuilder-api-prod.azurewebsites.net"; // production
+  baseUrl: string = "http://localhost:3333/push"; // local
+  // baseUrl: string = "https://pwabuilder-api-pre.azurewebsites.net/push"; // dev
+  // baseUrl: string = "https://pwabuilder-api-prod.azurewebsites.net/push"; // production
 
   vanillaCode: string = sampleCode.vanilla;
   reactCode: string = sampleCode.react;
@@ -302,7 +302,6 @@ export class pwabpush extends LitElement {
   }
 
   selectProject(event) {
-    console.log(event.target.value);
     const value = event.target.value;
 
     switch (value) {
@@ -425,22 +424,6 @@ export class pwabpush extends LitElement {
     } catch (e) {
       console.log("failed to send notification");
     }
-  }
-
-  firstUpdated(changed) {
-    // TODO move this code
-    console.log("first updated", changed);
-    console.log(this.shadowRoot.getElementById("clientCode"));
-    this.monacoEditor = window.monaco.editor.create(
-      this.shadowRoot.getElementById("clientCode"),
-      {
-        value: this.swCode,
-        language: "javascript",
-      }
-    );
-    console.log(this.monacoEditor);
-
-    super.firstUpdated(changed);
   }
 
   render() {
@@ -575,9 +558,11 @@ export class pwabpush extends LitElement {
                   <h5>Add this code to your project</h5>
 
                   <!-- TODO use monaco properly here... wrap monaco in a WC and do this -->
-                  <code>
-                    ${this.swCode}
-                  </code>
+                  <pwab-monaco
+                    monaco-id="pushSample"
+                    code="${this.swCode}"
+                    showCopyButton
+                  ></pwab-monaco>
                   <div id="clientCode" style="display: none;"></div>
                 </div>
               </div>

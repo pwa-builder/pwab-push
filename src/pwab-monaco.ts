@@ -5,7 +5,7 @@ import { editor } from "monaco-editor/esm/vs/editor/editor.api";
 export default class pwabmonaco extends LitElement {
   // TODO start chunking away the basic behavior of monaco and have it listen to changes from the parent.
 
-  @property({ type: String })
+  @property({ type: String, attribute: "monaco-id" })
   public monacoId: string;
 
   @property({ type: String })
@@ -14,18 +14,19 @@ export default class pwabmonaco extends LitElement {
   @property({ type: String })
   public code: string;
 
-  @property({ type: Boolean })
-  public showCopyButton;
+  @property({ type: Boolean, attribute: "copy" })
+  public showCopyButton: boolean = false;
 
   @property({ type: String })
   public color = "#F0F0F0";
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, attribute: "toolbar" })
   showToolbar: boolean = false;
 
+  @property({ type: Boolean, attribute: "overlay" })
   showOverlay: boolean = false;
 
-  editedCode: string;
+  editedCode: string; // TODO is this needed?
 
   textCopied: boolean = false;
 
@@ -57,11 +58,7 @@ export default class pwabmonaco extends LitElement {
     super();
   }
 
-  static get observedAttributes() {
-    return ["showToolbar", "theme"];
-  }
-
-  static get style() {
+  static get styles() {
     return css``;
   }
 
@@ -75,22 +72,22 @@ export default class pwabmonaco extends LitElement {
   }
 
   firstUpdated(changedProperties) {
-    const container = this.shadowRoot.getElementById("");
+    const container = this.shadowRoot.getElementById(this.monacoId);
     this.editor = (window as any).monaco.editor.create(container, {
       ...this.monacoOptions,
     });
   }
 
-  updated(changedProperties) {}
+  // updated(changedProperties) {}
 
   connectedCallback() {
     super.connectedCallback();
-    (window as any).addEventListener("resize", this.onResize);
+    (window as any).addEventListener("resize", () => this.onResize);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    (window as any).removeEventListener("resize", this.onResize);
+    (window as any).removeEventListener("resize", () => this.onResize);
   }
 
   codeHeader() {
@@ -108,6 +105,10 @@ export default class pwabmonaco extends LitElement {
       <slot></slot>
       ${copyButton} ${copyNotification}
     </div>`;
+  }
+
+  createRenderRoot() {
+    return this;
   }
 
   overlay() {
