@@ -1,32 +1,33 @@
-const path = require('path');
 const webpack = require('webpack');
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-  entry: "./monaco/editor.js",
-  mode: "development",
+  mode: 'development',
+  entry: {
+    "app": './monaco/editor.js',
+    "editor.worker": 'monaco-editor/esm/vs/editor/editor.worker.js',
+    "json.worker": 'monaco-editor/esm/vs/language/json/json.worker',
+    "css.worker": 'monaco-editor/esm/vs/language/css/css.worker',
+    "html.worker": 'monaco-editor/esm/vs/language/html/html.worker',
+    "ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker',
+  },
   output: {
-    path: path.resolve(__dirname, 'www', 'monaco'),
-    filename: 'monaco.js'
+    globalObject: 'self',
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'www', "monaco")
   },
   module: {
     rules: [{
-      test: /\.css$/i,
+      test: /\.css$/,
       use: ['style-loader', 'css-loader']
     }, {
       test: /\.ttf$/,
       use: ['file-loader']
     }]
   },
-  optimization: {
-    usedExports: true
-  },
   plugins: [
-    new CleanWebpackPlugin(),
-    new MonacoWebpackPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1,
-    }),
+    })
   ]
-}
+};

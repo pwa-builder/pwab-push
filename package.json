@@ -13,7 +13,7 @@
     "start": "concurrently \"tsc --watch\" \"npx es-dev-server --node-resolve --open www/\"",
     "dev": "concurrently \"tsc --watch\" \"npx es-dev-server --node-resolve --open www/\"",
     "build": "tsc && rollup -c",
-    "buildMonaco": "webpack"
+    "buildMonaco": "webpack --progress"
   },
   "author": "PWABuilder Team",
   "license": "ISC",
