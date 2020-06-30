@@ -1,10 +1,8 @@
 import { html, customElement, property, css, LitElement } from "lit-element";
-import { editor } from "monaco-editor/esm/vs/editor/editor.api";
+import { editor, IDisposable } from "monaco-editor/esm/vs/editor/editor.api";
 
 @customElement("pwab-monaco")
 export default class pwabmonaco extends LitElement {
-  // TODO start chunking away the basic behavior of monaco and have it listen to changes from the parent.
-
   @property({ type: String, attribute: "monaco-id" })
   public monacoId: string;
 
@@ -14,7 +12,7 @@ export default class pwabmonaco extends LitElement {
   @property({ type: String })
   public code: string;
 
-  @property({ type: Boolean, attribute: "copy" })
+  @property({ type: Boolean, attribute: "show-copy" })
   public showCopyButton: boolean = false;
 
   @property({ type: String })
@@ -26,17 +24,22 @@ export default class pwabmonaco extends LitElement {
   @property({ type: Boolean, attribute: "overlay" })
   showOverlay: boolean = false;
 
-  editedCode: string; // TODO is this needed?
+  editedCode: string;
 
   textCopied: boolean = false;
 
-  editor: editor.IStandaloneCodeEditor;
+  editor?: editor.IStandaloneCodeEditor;
+
+  @property({ type: Number, attribute: "editor-height" })
+  editorHeight: number = 600;
+
+  @property({ type: Number, attribute: "editor-width" })
+  editorWidth: number = 627;
 
   errors: any[] = [];
 
   monacoOptions = {
     language: "javascript",
-    value: this.code,
     lineNumbers: "on",
     fixedOverflowWidgets: true,
     wordWrap: "on",
@@ -49,13 +52,18 @@ export default class pwabmonaco extends LitElement {
     minimap: {
       enabled: false,
     },
-    onCodeChange: this.onCodeChange, // TODO
-    onDidChangeModelDecorations: this.onDecorationsChange, // TODO
-    editorDidMount: this.editorMount, // TODO
+    onDidChangeModelContent: () => this.onCodeChange,
+    onDidChangeModelDecorations: () => this.onDecorationsChange,
+    editorDidMount: () => this.editorMount,
   };
 
   constructor() {
     super();
+
+    window.addEventListener("resize", () => {
+      console.log("resized()");
+      this.handleResize();
+    });
   }
 
   static get styles() {
@@ -126,37 +134,41 @@ export default class pwabmonaco extends LitElement {
     `;
   }
 
-  // TODO make a function create the monacoOptions and a function to create the theme options
+  shouldUpdate(changedProperties: Map<string, any>): boolean {
+    if (changedProperties.has("code")) {
+      this.editor = null;
+    }
+
+    return super.shouldUpdate(changedProperties);
+  }
+
+  update(changedProperties) {
+    this.createContainer();
+    super.update(changedProperties);
+  }
 
   render() {
-    return html`<div>
-      ${this.codeHeader()}
-      <div id="${this.monacoId}"></div>
+    return html`<div class="pwab-monaco">
+      ${this.codeHeader()} ${this.getContainer()}
     </div>`;
   }
 
-  firstUpdated(changedProperties) {
-    const container = this.shadowRoot.getElementById(this.monacoId);
-    this.editor = (window as any).monaco.editor.create(container, {
-      ...this.monacoOptions,
-    });
+  updated(changedProperties) {
+    this.rebindEvents();
+    super.updated(changedProperties);
   }
-
-  // updated(changedProperties) {}
 
   connectedCallback() {
     super.connectedCallback();
-    (window as any).addEventListener("resize", () => this.onResize);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    (window as any).removeEventListener("resize", () => this.onResize);
   }
 
   codeHeader() {
     const copyButton = this.showCopyButton
-      ? html`<button @click="${() => this.copy()}" class="copyButton">
+      ? html`<button @click="${this.copy}" class="copyButton">
           <i class="fas fa-copy platformIcon"></i>
           Copy
         </button>`
@@ -169,10 +181,6 @@ export default class pwabmonaco extends LitElement {
       <slot></slot>
       ${copyButton} ${copyNotification}
     </div>`;
-  }
-
-  createRenderRoot() {
-    return this;
   }
 
   overlay() {
@@ -231,7 +239,6 @@ export default class pwabmonaco extends LitElement {
       }, 1300);
     } catch (err) {
       console.error(err);
-      // TODO display error
     }
   }
 
@@ -243,26 +250,42 @@ export default class pwabmonaco extends LitElement {
     this.showOverlay = false;
   }
 
-  onResize() {
-    this.removeEditor();
-    this.reloadEditor();
+  handleResize() {
+    this.requestUpdate();
   }
 
-  removeEditor() {
-    var item = this.monacoId && this.shadowRoot.getElementById(this.monacoId);
-    while (item && item.hasChildNodes()) {
-      item.firstChild && item.removeChild(item.firstChild);
-    }
-  }
+  createContainer() {
+    const div = document.createElement("div");
+    const body = document.getElementsByTagName("body")[0];
+    div.id = this.monacoId;
+    div.style.height = "" + this.editorHeight;
+    div.style.width = "" + this.editorWidth;
 
-  reloadEditor() {
-    if (!this.monacoId) return;
+    body.appendChild(div);
 
     this.editor = (window as any).monaco.editor.create(
-      this.shadowRoot.getElementById(this.monacoId),
-      this.monacoOptions
-    );
+      document.getElementById(this.monacoId),
+      {
+        value: this.editor ? this.editor.getValue() : this.code,
+        ...this.monacoOptions,
+      }
+    ) as editor.IStandaloneCodeEditor;
     this.defineTheme();
+  }
+
+  getContainer() {
+    return document
+      .getElementsByTagName("body")[0]
+      .removeChild(document.getElementById(this.monacoId));
+  }
+
+  rebindEvents() {
+    this.editor.onDidChangeModelContent((e) => {
+      this.onCodeChange(e);
+    });
+    this.editor.onDidChangeModelDecorations((e) => {
+      this.onDecorationsChange(e);
+    });
   }
 
   defineTheme() {
@@ -274,24 +297,12 @@ export default class pwabmonaco extends LitElement {
         "editor.background": this.color,
       },
     });
-    (window as any).monaco.editor.setTheme("lighterTheme");
+    (window as any).monaco.editor.setTheme(`${this.theme}Theme`);
   }
 
-  onCodeChange() {
-    // TODO emit event? not 100% sure if needed
+  onCodeChange(evt: editor.IModelContentChangedEvent) {}
 
-    console.log("onCodeChange", arguments);
-    // this.$emit("editorValue", this.code);
-  }
-
-  onDecorationsChange() {
-    console.log("onDecorationsChange", arguments);
-    this.errors = (window as any).monaco.editor.getModelMarkers({});
-
-    if (this.errors.length > 0) {
-      // this.$emit("invalidManifest");
-    }
-  }
+  onDecorationsChange(evt: editor.IModelDecorationsChangedEvent) {}
 
   editorMount() {
     console.log("editorMount", arguments);
