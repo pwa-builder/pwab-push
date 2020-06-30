@@ -85,6 +85,10 @@ export class pwabpush extends LitElement {
         max-height: 100vh;
       }
 
+      #leftColumn #stepTwo.step.open {
+        max-height: 160vh;
+      }
+
       #rightColumn {
         display: flex;
         flex-direction: column;
@@ -555,14 +559,14 @@ export class pwabpush extends LitElement {
                 </div>
 
                 <div class="actionsBlock">
-                  <h5>Add this code to your project</h5>
-
                   <!-- TODO use monaco properly here... wrap monaco in a WC and do this -->
                   <pwab-monaco
                     monaco-id="pushSample"
                     code="${this.swCode}"
-                    showCopyButton
-                  ></pwab-monaco>
+                    show-copy
+                  >
+                    <h5>Add this code to your service worker</h5>
+                  </pwab-monaco>
                   <div id="clientCode" style="display: none;"></div>
                 </div>
               </div>
