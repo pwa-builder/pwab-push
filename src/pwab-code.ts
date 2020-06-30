@@ -1,5 +1,5 @@
 export const vanilla = `
-// Add these functions to prompt the user to subscribe to the pwabuilder push notification server
+// Add these functions to prompt the user to subscribe to the pwabuilder push notification server using the pwabuilder.
 async function subscribeUser() {
   try {
     const vapidPublicKey = ""; // get public key here
