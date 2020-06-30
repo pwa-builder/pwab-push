@@ -59,7 +59,71 @@ export default class pwabmonaco extends LitElement {
   }
 
   static get styles() {
-    return css``;
+    return css`
+      .pwab-monaco #pushSample > * {
+        position: relative !important;
+      }
+
+      .pwab-monaco #pushSample > * > * {
+        position: relative !important;
+      }
+
+      .codeHeader {
+        padding-left: 1em;
+        padding-bottom: 1em;
+        padding-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 9999;
+      }
+      .codeHeader h3 {
+        font-family: sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        padding-left: 1em;
+        width: 60%;
+      }
+
+      .codeHeader div {
+        width: 20em;
+      }
+
+      .copyButton {
+        background: #c5c5c5;
+        color: #3c3c3c;
+        border: none;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 12px;
+        padding-top: 3px;
+        padding-bottom: 5px;
+        padding-right: 9px;
+        padding-left: 9px;
+        margin-right: 2em;
+      }
+
+      .fas {
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        -webkit-font-smoothing: antialiased;
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        line-height: 1;
+        box-sizing: border-box;
+        font-size: 12px;
+      }
+
+      @media (max-width: 1079px) {
+        .codeHeader h3 {
+          font-size: 12px;
+        }
+      }
+    `;
   }
 
   // TODO make a function create the monacoOptions and a function to create the theme options
