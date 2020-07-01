@@ -559,7 +559,8 @@ export class pwabpush extends LitElement {
                 </div>
 
                 <div class="actionsBlock">
-                  <!-- TODO use monaco properly here... wrap monaco in a WC and do this -->
+                  <button @click="${this.subscribe}">Subscribe</button>
+
                   <pwab-monaco
                     monaco-id="pushSample"
                     code="${this.swCode}"
