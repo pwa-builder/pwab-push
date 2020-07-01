@@ -18,20 +18,34 @@ self.addEventListener("fetch", function (event) {
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    fetch(event.request).catch(function (error) {
-      // The following validates that the request was for a navigation to a new document
-      if (
-        event.request.destination !== "document" ||
-        event.request.mode !== "navigate"
-      ) {
-        return;
-      }
+    fetch(event.request)
+      .then(function (res) {
+        // if (!res || res.status !== 200 || res.type !== 'basic') {
+        //   return res;
+        // }
 
-      console.error("[PWA Builder] Network request Failed. Serving offline page " + error);
-      return caches.open(CACHE).then(function (cache) {
-        return cache.match(offlineFallbackPage);
-      });
-    })
+        // var toCache = res.clone();
+        // caches.open(CACHE)
+        //   .then(function (cache) {
+        //     cache.put(evt.request, toCache);
+        //   });
+
+        return res;
+      })
+    // .catch(function (error) {
+    // The following validates that the request was for a navigation to a new document
+    // if (
+    //   event.request.destination !== "document" ||
+    //   event.request.mode !== "navigate"
+    // ) {
+    //   return;
+    // }
+
+    // console.error("[PWA Builder] Network request Failed. Serving offline page " + error);
+    // return caches.open(CACHE).then(function (cache) {
+    //   return cache.match(offlineFallbackPage);
+    // });
+    // })
   );
 });
 
