@@ -20,11 +20,10 @@ export class pwabpush extends LitElement {
 
   @property({ type: String }) editorText: string = "";
 
-  vapidKeys: VapidKeys;
+  @property({ type: String }) url: string =
+    "https://pwabuilder-api-prod.azurewebsites.net/push";
 
-  baseUrl: string = "http://localhost:3333/push"; // local
-  // baseUrl: string = "https://pwabuilder-api-pre.azurewebsites.net/push"; // dev
-  // baseUrl: string = "https://pwabuilder-api-prod.azurewebsites.net/push"; // production
+  vapidKeys: VapidKeys;
 
   vanillaCode: string = sampleCode.vanilla;
   reactCode: string = sampleCode.react;
@@ -339,7 +338,7 @@ export class pwabpush extends LitElement {
 
   async createVapidKeys(): Promise<VapidKeys> {
     const { keys }: PwabVapidResponse = await fetch(
-      this.baseUrl + "/create"
+      this.url + "/create"
     ).then((res) => res.json());
 
     return {
@@ -348,7 +347,7 @@ export class pwabpush extends LitElement {
   }
 
   async registerKeys() {
-    const response = await fetch(this.baseUrl + "/register", {
+    const response = await fetch(this.url + "/register", {
       method: "POST",
       body: JSON.stringify({
         userEmail: this.userEmail,
@@ -378,7 +377,7 @@ export class pwabpush extends LitElement {
         applicationServerKey: convertedVapidKey,
       });
 
-      const response = await fetch(this.baseUrl + "/subscribe", {
+      const response = await fetch(this.url + "/subscribe", {
         method: "POST",
         body: JSON.stringify({
           subscription: subscription,
@@ -400,7 +399,7 @@ export class pwabpush extends LitElement {
   async sendNotification() {
     try {
       const response: PwabNotificationResponse = await fetch(
-        this.baseUrl + "/send",
+        this.url + "/send",
         {
           method: "POST",
           headers: {},

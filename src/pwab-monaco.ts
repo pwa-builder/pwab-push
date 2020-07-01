@@ -24,8 +24,6 @@ export default class pwabmonaco extends LitElement {
   @property({ type: Boolean, attribute: "overlay" })
   showOverlay: boolean = false;
 
-  editedCode: string;
-
   textCopied: boolean = false;
 
   editor?: editor.IStandaloneCodeEditor;

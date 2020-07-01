@@ -15,7 +15,12 @@
   </head>
 
   <body>
-    <pwab-push><h1>Testing, Testing, 123</h1></pwab-push>
+    <!-- "http://localhost:3333/push"; // local -->
+    <!-- "https://pwabuilder-api-pre.azurewebsites.net/push"; // dev -->
+    <!-- "https://pwabuilder-api-prod.azurewebsites.net/push"; // production -->
+    <pwab-push url="http://localhost:3333/push"
+      ><h1>Testing, Testing, 123</h1></pwab-push
+    >
     <script type="module">
       import "../build/pwab-push.js";
     </script>
