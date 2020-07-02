@@ -128,6 +128,10 @@ export class pwabpush extends LitElement {
         color: grey;
       }
 
+      #emailButton:disabled {
+        border-color: rgb(170, 170, 170);
+      }
+
       #emailInputWrapper {
         display: flex;
         justify-content: space-between;
@@ -322,8 +326,13 @@ export class pwabpush extends LitElement {
     }
   }
 
-  addEmail() {
-    console.log("addEmail()");
+  addEmail(evt) {
+    const emailNode = this.shadowRoot.getElementById(
+      "emailInput"
+    ) as HTMLInputElement;
+
+    this.userEmail = emailNode.value;
+    this.requestUpdate();
   }
 
   async clickGenerateAndRegisterButton() {
@@ -429,6 +438,15 @@ export class pwabpush extends LitElement {
     }
   }
 
+  validUserEmail() {
+    return (
+      this.userEmail &&
+      this.userEmail !== "" &&
+      this.userEmail.match(/^\S+@\S+\.\S+$/) &&
+      this.userEmail.match(/^\S+@\S+\.\S+$/).length == 1
+    );
+  }
+
   render() {
     return html`
       <div id="wrapper">
@@ -485,8 +503,12 @@ export class pwabpush extends LitElement {
                     />
                   </div>
 
-                  <button id="emailButton" @click="${() => this.addEmail()}">
-                    Add Email
+                  <button
+                    id="emailButton"
+                    @click=${this.addEmail}
+                    ?disabled=${this.validUserEmail()}
+                  >
+                    ${this.validUserEmail() ? "Email added" : "Add Email"}
                   </button>
                 </div>
 
@@ -509,7 +531,7 @@ export class pwabpush extends LitElement {
                   <div class="actionButtons">
                     <button
                       class="primaryAction"
-                      @click="${() => this.clickGenerateAndRegisterButton()}"
+                      @click=${this.clickGenerateAndRegisterButton}
                     >
                       Generate and Register VAPID Keys
                     </button>
@@ -545,7 +567,7 @@ export class pwabpush extends LitElement {
                     </label>
 
                     <select
-                      @change="${(event) => this.selectProject(event)}"
+                      @change=${this.selectProject}
                       id="projectSelect"
                       name="projectSelect"
                     >
@@ -558,7 +580,7 @@ export class pwabpush extends LitElement {
                 </div>
 
                 <div class="actionsBlock">
-                  <button @click="${this.subscribe}">Subscribe</button>
+                  <button @click=${this.subscribe}>Subscribe</button>
 
                   <pwab-monaco
                     monaco-id="pushSample"
@@ -628,10 +650,7 @@ export class pwabpush extends LitElement {
                   </div>
                 </div>
 
-                <button
-                  id="sendButton"
-                  @click="${() => this.sendNotification()}"
-                >
+                <button id="sendButton" @click=${this.sendNotification}>
                   Send Notification
                 </button>
               </div>
