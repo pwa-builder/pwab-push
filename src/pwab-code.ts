@@ -73,3 +73,34 @@ import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
 const el = document.createElement('pwa-update');
 document.body.appendChild(el);
 `;
+
+export const sendNotificationScript = `
+async sendNotification() {
+    try {
+      const response: PwabNotificationResponse = await fetch(
+        "https://pwabuilder-api-pre.azurewebsites.net//push/send",
+        {
+          method: "POST",
+          cache: "no-cache",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            publicKey: "",
+            privateKey: "",
+            subject: "registeredEmail@example.com",
+            notification: JSON.stringify({
+              notification: {
+                title: "title text",
+                body: "body text",
+                icon: "url.com/images/icon",
+              },
+            }),
+          }),
+        }
+      ).then((res) => res.json());
+    } catch (e) {
+      console.log("failed to send notification");
+    }
+  }
+`;

@@ -414,7 +414,6 @@ export class pwabpush extends LitElement {
 
     var subscription = await registration.pushManager.getSubscription();
     if (!subscription) {
-      alert("You are not subscribed.");
       return;
     }
 
@@ -455,19 +454,21 @@ export class pwabpush extends LitElement {
             ...this.vapidKeys,
             subject: this.userEmail,
             notification: JSON.stringify({
-              ...NotificationOptions,
-              title:
-                this.notificationTitle !== ""
-                  ? this.notificationTitle
-                  : NotificationOptions.title,
-              body:
-                this.notificationBody !== ""
-                  ? this.notificationBody
-                  : NotificationOptions.body,
-              icon:
-                this.notificationIcon !== ""
-                  ? this.notificationIcon
-                  : NotificationOptions.icon,
+              notification: {
+                ...NotificationOptions,
+                title:
+                  this.notificationTitle !== ""
+                    ? this.notificationTitle
+                    : NotificationOptions.title,
+                body:
+                  this.notificationBody !== ""
+                    ? this.notificationBody
+                    : NotificationOptions.body,
+                icon:
+                  this.notificationIcon !== ""
+                    ? this.notificationIcon
+                    : NotificationOptions.icon,
+              },
             }),
           }),
         }
