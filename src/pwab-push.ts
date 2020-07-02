@@ -358,6 +358,10 @@ export class pwabpush extends LitElement {
   async registerKeys() {
     const response = await fetch(this.url + "/register", {
       method: "POST",
+      cache: "no-cache",
+      headers: {
+        "content-type": "application/json",
+      },
       body: JSON.stringify({
         userEmail: this.userEmail,
         ...this.vapidKeys,
@@ -388,6 +392,10 @@ export class pwabpush extends LitElement {
 
       const response = await fetch(this.url + "/subscribe", {
         method: "POST",
+        cache: "no-cache",
+        headers: {
+          "content-type": "application/json",
+        },
         body: JSON.stringify({
           subscription: subscription,
           publicKeys: this.vapidKeys.publicKey,
@@ -439,7 +447,10 @@ export class pwabpush extends LitElement {
         this.url + "/send",
         {
           method: "POST",
-          headers: {},
+          cache: "no-cache",
+          headers: {
+            "content-type": "application/json",
+          },
           body: JSON.stringify({
             ...this.vapidKeys,
             subject: this.userEmail,
