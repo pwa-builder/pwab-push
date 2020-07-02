@@ -30,7 +30,7 @@ async function subscribeUser() {
       })
     });
 
-    // handle response after registraction here
+    // handle response after registration here
 
   } catch(e) {
     // handle error here
