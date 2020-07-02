@@ -47,7 +47,7 @@ self.addEventListener("install", function (event) {
 //     // });
 //     // })
 //   );
-});
+// });
 
 // This is an event that can be fired from your page to tell the SW to update the offline page
 // self.addEventListener("refreshOffline", function () {
