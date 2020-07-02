@@ -397,8 +397,8 @@ export class pwabpush extends LitElement {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          subscription: subscription,
-          publicKeys: this.vapidKeys.publicKey,
+          subscription: JSON.stringify(subscription),
+          publicKey: this.vapidKeys.publicKey,
         }),
       }).then((res) => res.json());
     }
