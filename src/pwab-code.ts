@@ -89,6 +89,7 @@ async sendNotification() {
             publicKey: "",
             privateKey: "",
             subject: "registeredEmail@example.com",
+            // double nesting is required! this is a bug
             notification: JSON.stringify({
               notification: {
                 title: "title text",
