@@ -618,9 +618,10 @@ export class pwabpush extends LitElement {
                   </div>
                 </div>
 
-                <div class="actionsBlock">
-                  <button @click=${this.subscribe}>Subscribe</button>
+                <button @click=${this.subscribe}>Subscribe</button>
+                <button @click=${this.unsubscribe}>Unsubscribe</button>
 
+                <div class="actionsBlock">
                   <pwab-monaco
                     monaco-id="pushSample"
                     code="${this.swCode}"
