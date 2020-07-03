@@ -1,5 +1,4 @@
 import { html, customElement, property, css, LitElement } from "lit-element";
-import { editor, IDisposable } from "monaco-editor/esm/vs/editor/editor.api";
 import * as sampleCode from "./pwab-code";
 
 @customElement("pwab-monaco")
@@ -27,34 +26,7 @@ export class pwabmonaco extends LitElement {
 
   textCopied: boolean = false;
 
-  editor?: editor.IStandaloneCodeEditor;
-
-  @property({ type: Number, attribute: "editor-height" })
-  editorHeight: number = 600;
-
-  @property({ type: Number, attribute: "editor-width" })
-  editorWidth: number = 627;
-
   errors: any[] = [];
-
-  monacoOptions = {
-    language: "javascript",
-    lineNumbers: "on",
-    fixedOverflowWidgets: true,
-    wordWrap: "on",
-    // wordWrap: "wordWrapColumn",
-    // wordWrapColumn: 50,
-    scrollBeyondLastLine: false,
-    wordWrapMinified: true,
-    wrappingIndent: "indent",
-    fontSize: 16,
-    minimap: {
-      enabled: false,
-    },
-    onDidChangeModelContent: () => this.onCodeChange,
-    onDidChangeModelDecorations: () => this.onDecorationsChange,
-    editorDidMount: () => this.editorMount,
-  };
 
   constructor() {
     super();
@@ -133,41 +105,22 @@ export class pwabmonaco extends LitElement {
     `;
   }
 
-  shouldUpdate(changedProperties: Map<string, any>): boolean {
-    if (changedProperties.has("code")) {
-      this.editor = null;
-    }
-
-    return super.shouldUpdate(changedProperties);
-  }
-
-  update(changedProperties) {
-    this.createContainer(changedProperties);
-    super.update(changedProperties);
-  }
-
   render() {
     return html`<div class="pwab-monaco">
-      ${this.codeHeader()} ${this.getContainer()}
+      ${sampleCode[this.code].map((sample) => {
+        return html`${this.codeHeader(sample)} <code>${sample.code}</code>`;
+      })}
     </div>`;
   }
 
-  updated(changedProperties) {
-    this.rebindEvents();
-    super.updated(changedProperties);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-  }
-
-  codeHeader() {
+  codeHeader(sample: sampleCode.CodeSample) {
     const copyButton = this.showCopyButton
-      ? html`<button @click="${this.copy}" class="copyButton">
+      ? html`<button
+          @click="${() => {
+            this.copy(sample);
+          }}"
+          class="copyButton"
+        >
           <i class="fas fa-copy platformIcon"></i>
           Copy
         </button>`
@@ -182,55 +135,9 @@ export class pwabmonaco extends LitElement {
     </div>`;
   }
 
-  overlay() {
-    if (!this.showOverlay) return;
-
-    return html`<div id="errorOverlay">
-      <h2>Errors</h2>
-      <ul>
-        ${this.errors.map(
-          (error) =>
-            html`<li>
-              <span>Line ${error.startLineNumber}:</span>${error.message}
-            </li>`
-        )}
-      </ul>
-
-      <div id="errorButtonDiv">
-        <button id="closeButton" @click="${() => this.closeOverlay()}">
-          Close
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>`;
-  }
-
-  toolbar() {
-    if (!this.showToolbar) return;
-
-    return html`<div id="toolbar">
-      <div v-if="errorNumber">
-        <button @click="${() => this.showErrorOverlay()}" id="errorsButton">
-          <i class="fas fa-exclamation-triangle"></i>
-          ${this.errors.length} errors
-        </button>
-      </div>
-      ${!this.errors.length || this.errors.length === 0
-        ? html`<div>
-            <button id="noErrorsButton">
-              <i class="fas fa-exclamation-triangle"></i>
-              0 Errors
-            </button>
-          </div>`
-        : undefined}
-    </div>`;
-  }
-
-  async copy() {
-    const code = this.editor.getValue();
-
+  async copy(sample: sampleCode.CodeSample) {
     try {
-      await (navigator as any).clipboard.writeText(code);
+      await (navigator as any).clipboard.writeText(sample.code);
       this.textCopied = true;
 
       setTimeout(() => {
@@ -253,67 +160,7 @@ export class pwabmonaco extends LitElement {
     this.requestUpdate();
   }
 
-  createContainer(changedProperties: Map<string, string>) {
-    const div = document.createElement("div");
-    const body = document.getElementsByTagName("body")[0];
-    div.id = this.monacoId;
-    div.style.height = "" + this.editorHeight;
-    div.style.width = "" + this.editorWidth;
-
-    body.appendChild(div);
-
-    this.editor = (window as any).monaco.editor.create(
-      document.getElementById(this.monacoId),
-      {
-        value:
-          this.editor && !changedProperties.has("code")
-            ? this.editor.getValue()
-            : this.getCode(),
-        ...this.monacoOptions,
-      }
-    ) as editor.IStandaloneCodeEditor;
-    this.defineTheme();
-  }
-
-  getContainer() {
-    return document
-      .getElementsByTagName("body")[0]
-      .removeChild(document.getElementById(this.monacoId));
-  }
-
-  getCode() {
+  getCode(): sampleCode.CodeSample[] {
     return sampleCode[this.code];
-  }
-
-  rebindEvents() {
-    this.editor.onDidChangeModelContent((e) => {
-      this.onCodeChange(e);
-    });
-    this.editor.onDidChangeModelDecorations((e) => {
-      this.onDecorationsChange(e);
-    });
-  }
-
-  defineTheme() {
-    (window as any).monaco.editor.defineTheme(`${this.theme}Theme`, {
-      base: "vs",
-      inherit: true,
-      rules: [],
-      colors: {
-        "editor.background": this.color,
-      },
-    });
-    (window as any).monaco.editor.setTheme(`${this.theme}Theme`);
-  }
-
-  onCodeChange(evt: editor.IModelContentChangedEvent) {}
-
-  onDecorationsChange(evt: editor.IModelDecorationsChangedEvent) {}
-
-  editorMount() {
-    console.log("editorMount", arguments);
-    // this.editor = editor; // TODO ????
-
-    // console.log("editor mount", editor);
   }
 }

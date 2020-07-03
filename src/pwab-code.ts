@@ -5,7 +5,14 @@ export enum framework {
   angular = "angular",
 }
 
-export const vanilla = `
+export interface CodeSample {
+  title: string;
+  code: string;
+}
+
+export const vanillaCode: CodeSample = {
+  title: "",
+  code: `
 // Add these functions to prompt the user to subscribe to the pwabuilder push notification server using the pwabuilder.
 async function subscribeUser() {
   try {
@@ -62,25 +69,34 @@ function urlBase64ToUint8Array(base64String) {
 
 // omit if you want to control when you prompt the user to subscribe
 subscribeUser();
-`;
+`,
+};
 
-export const react = vanilla;
+export const angularCode: CodeSample = {
+  title: "",
+  code: ``,
+};
 
-export const angular = `
-`;
+export const angularRegister: CodeSample = {
+  title: "",
+  code: ``,
+};
 
-export const vue = vanilla;
-
-export const landingScript = `
+export const landingScript: CodeSample = {
+  title: "",
+  code: `
 // Add this below content to your HTML page inside a <script type="module"></script> tag, or add the js file to your page at the very top to register service worker
 
 import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
 
 const el = document.createElement('pwa-update');
 document.body.appendChild(el);
-`;
+`,
+};
 
-export const sendNotificationScript = `
+export const sendNotificationScript: CodeSample = {
+  title: "",
+  code: `
 async sendNotification() {
     try {
       const response: PwabNotificationResponse = await fetch(
@@ -110,4 +126,10 @@ async sendNotification() {
       console.log("failed to send notification");
     }
   }
-`;
+`,
+};
+
+export const vanilla = [vanillaCode, sendNotificationScript];
+export const react = [vanillaCode];
+export const angular = [angularCode, angularRegister, sendNotificationScript];
+export const vue = [vanillaCode, sendNotificationScript];
