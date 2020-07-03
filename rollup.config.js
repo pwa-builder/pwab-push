@@ -20,9 +20,9 @@ export default [{
     // })
   ]
 }, {
-  input: 'build/pwab-monaco.js',
+  input: 'build/pwab-samples.js',
   output: {
-    file: 'dist/pwab-monaco.js',
+    file: 'dist/pwab-samples.js',
     format: 'es',
     sourcemap: true
   },
