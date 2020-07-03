@@ -618,13 +618,7 @@ export class pwabpush extends LitElement {
                 <button @click=${this.unsubscribe}>Unsubscribe</button>
 
                 <div class="actionsBlock">
-                  <pwab-monaco
-                    monaco-id="pushSample"
-                    code="${this.swCode}"
-                    show-copy
-                  >
-                    <h5>Add this code to your service worker</h5>
-                  </pwab-monaco>
+                  <pwab-samples code="${this.swCode}" show-copy> </pwab-samples>
                   <div id="clientCode" style="display: none;"></div>
                 </div>
               </div>

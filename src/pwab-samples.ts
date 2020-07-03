@@ -3,9 +3,6 @@ import * as sampleCode from "./pwab-code";
 
 @customElement("pwab-monaco")
 export class pwabmonaco extends LitElement {
-  @property({ type: String, attribute: "monaco-id" })
-  public monacoId: string;
-
   @property({ type: String })
   theme: string = "lighter";
 
@@ -130,7 +127,7 @@ export class pwabmonaco extends LitElement {
       : undefined;
 
     return html`<div class="codeHeader">
-      <slot></slot>
+      <h5>${sample.title}</h5>
       ${copyButton} ${copyNotification}
     </div>`;
   }

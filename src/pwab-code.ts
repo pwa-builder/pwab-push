@@ -11,7 +11,7 @@ export interface CodeSample {
 }
 
 export const vanillaCode: CodeSample = {
-  title: "",
+  title: "Add this code to your service worker",
   code: `
 // Add these functions to prompt the user to subscribe to the pwabuilder push notification server using the pwabuilder.
 async function subscribeUser() {
@@ -74,7 +74,9 @@ subscribeUser();
 
 export const angularCode: CodeSample = {
   title: "",
-  code: ``,
+  code: `
+
+`,
 };
 
 export const angularRegister: CodeSample = {
