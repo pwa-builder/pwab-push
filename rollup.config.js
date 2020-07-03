@@ -4,8 +4,8 @@ import minify from 'rollup-plugin-babel-minify';
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 import strip from '@rollup/plugin-strip';
 
-export default {
-  input: ['build/pwab-push.js'],
+export default [{
+  input: 'build/pwab-push.js',
   output: {
     file: 'dist/pwab-push.js',
     format: 'es',
@@ -15,8 +15,23 @@ export default {
     resolve(),
     minifyHTML(),
     minify(),
-    strip({
-      functions: ['console.log']
-    })
+    // strip({
+    //   functions: ['console.log']
+    // })
   ]
-};
+}, {
+  input: 'build/pwab-monaco.js',
+  output: {
+    file: 'dist/pwab-monaco.js',
+    format: 'es',
+    sourcemap: true
+  },
+  plugins: [
+    resolve(),
+    minifyHTML(),
+    minify(),
+    // strip({
+    //   functions: ['console.log']
+    // })
+  ]
+}];
