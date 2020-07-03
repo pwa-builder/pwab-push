@@ -1,8 +1,8 @@
 import { html, customElement, property, css, LitElement } from "lit-element";
 import * as sampleCode from "./pwab-code";
 
-@customElement("pwab-monaco")
-export class pwabmonaco extends LitElement {
+@customElement("pwab-samples")
+export class pwabsamples extends LitElement {
   @property({ type: String })
   theme: string = "lighter";
 
@@ -27,23 +27,10 @@ export class pwabmonaco extends LitElement {
 
   constructor() {
     super();
-
-    window.addEventListener("resize", () => {
-      console.log("resized()");
-      this.handleResize();
-    });
   }
 
   static get styles() {
     return css`
-      .pwab-monaco #pushSample > * {
-        position: relative !important;
-      }
-
-      .pwab-monaco #pushSample > * > * {
-        position: relative !important;
-      }
-
       .codeHeader {
         padding-left: 1em;
         padding-bottom: 1em;
@@ -58,6 +45,7 @@ export class pwabmonaco extends LitElement {
         font-style: normal;
         font-weight: 600;
         font-size: 16px;
+        margin: 0;
         line-height: 24px;
         padding-left: 1em;
         width: 60%;
@@ -65,6 +53,11 @@ export class pwabmonaco extends LitElement {
 
       .codeHeader div {
         width: 20em;
+      }
+
+      .code-sample {
+        max-height: 600px;
+        overflow: scroll;
       }
 
       .copyButton {
@@ -103,9 +96,13 @@ export class pwabmonaco extends LitElement {
   }
 
   render() {
+    console.log(sampleCode);
+    console.log(sampleCode[this.code]);
+
     return html`<div class="pwab-monaco">
       ${sampleCode[this.code].map((sample) => {
-        return html`${this.codeHeader(sample)} <code>${sample.code}</code>`;
+        return html`${this.codeHeader(sample)}
+          <pre class="code-sample">${sample.code}</pre> `;
       })}
     </div>`;
   }
@@ -127,7 +124,7 @@ export class pwabmonaco extends LitElement {
       : undefined;
 
     return html`<div class="codeHeader">
-      <h5>${sample.title}</h5>
+      <h3>${sample.title}</h3>
       ${copyButton} ${copyNotification}
     </div>`;
   }
@@ -151,10 +148,6 @@ export class pwabmonaco extends LitElement {
 
   closeOverlay() {
     this.showOverlay = false;
-  }
-
-  handleResize() {
-    this.requestUpdate();
   }
 
   getCode(): sampleCode.CodeSample[] {

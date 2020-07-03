@@ -7,7 +7,7 @@ import {
 } from "./pwab-types";
 import { framework } from "./pwab-code";
 import * as utils from "./pwab-utils";
-import "./pwab-monaco";
+import "./pwab-samples";
 
 @customElement("pwab-push")
 export class pwabpush extends LitElement {
@@ -17,8 +17,6 @@ export class pwabpush extends LitElement {
   @property({ type: String }) notificationTitle: string = "";
   @property({ type: String }) notificationBody: string = "";
   @property({ type: String }) notificationIcon: string = "";
-
-  @property({ type: String }) editorText: string = "";
 
   @property({ type: String }) url: string =
     "https://pwabuilder-api-prod.azurewebsites.net/push";
@@ -619,7 +617,6 @@ export class pwabpush extends LitElement {
 
                 <div class="actionsBlock">
                   <pwab-samples code="${this.swCode}" show-copy> </pwab-samples>
-                  <div id="clientCode" style="display: none;"></div>
                 </div>
               </div>
             </div>
