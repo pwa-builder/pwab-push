@@ -5,13 +5,13 @@ import {
   VapidKeys,
   NotificationOptions,
 } from "./pwab-types";
-import * as sampleCode from "./pwab-code";
+import { framework } from "./pwab-code";
 import * as utils from "./pwab-utils";
 import "./pwab-monaco";
 
 @customElement("pwab-push")
 export class pwabpush extends LitElement {
-  @property({ type: String }) swCode: string;
+  @property({ type: String }) swCode: framework;
   @property({ type: String }) userEmail: string = "";
 
   @property({ type: String }) notificationTitle: string = "";
@@ -24,11 +24,6 @@ export class pwabpush extends LitElement {
     "https://pwabuilder-api-prod.azurewebsites.net/push";
 
   vapidKeys: VapidKeys;
-
-  vanillaCode: string = sampleCode.vanilla;
-  reactCode: string = sampleCode.react;
-  angularCode: string = sampleCode.angular;
-  vueCode: string = sampleCode.vue;
 
   static get styles() {
     return css`
@@ -287,7 +282,7 @@ export class pwabpush extends LitElement {
   constructor() {
     super();
 
-    this.swCode = this.reactCode;
+    this.swCode = framework.react;
   }
 
   openStep(step: string) {
@@ -312,17 +307,17 @@ export class pwabpush extends LitElement {
     const value = event.target.value;
 
     switch (value) {
-      case "angularCode":
-        this.swCode = this.angularCode;
+      case framework.angular:
+        this.swCode = framework.angular;
         break;
-      case "reactCode":
-        this.swCode = this.reactCode;
+      case framework.react:
+        this.swCode = framework.react;
         break;
-      case "vueCode":
-        this.swCode = this.vueCode;
+      case framework.vue:
+        this.swCode = framework.vue;
         break;
-      case "vanillaCode":
-        this.swCode = this.vanillaCode;
+      case framework.vanilla:
+        this.swCode = framework.vanilla;
     }
   }
 
@@ -611,10 +606,10 @@ export class pwabpush extends LitElement {
                       id="projectSelect"
                       name="projectSelect"
                     >
-                      <option value="reactCode">React</option>
-                      <option value="vueCode">Vue</option>
-                      <option value="angularCode">Angular</option>
-                      <option value="vanillaCode">Vanilla JS</option>
+                      <option value="${framework.react}">React</option>
+                      <option value=${framework.vue}>Vue</option>
+                      <option value="${framework.angular}">Angular</option>
+                      <option value="${framework.vanilla}">Vanilla JS</option>
                     </select>
                   </div>
                 </div>

@@ -1,3 +1,10 @@
+export enum framework {
+  vanilla = "vanilla",
+  react = "react",
+  vue = "vue",
+  angular = "angular",
+}
+
 export const vanilla = `
 // Add these functions to prompt the user to subscribe to the pwabuilder push notification server using the pwabuilder.
 async function subscribeUser() {
@@ -59,9 +66,8 @@ subscribeUser();
 
 export const react = vanilla;
 
-export const angular = `<script>
-  angular
-</script>`;
+export const angular = `
+`;
 
 export const vue = vanilla;
 
