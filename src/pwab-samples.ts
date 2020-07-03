@@ -1,8 +1,9 @@
 import { html, customElement, property, css, LitElement } from "lit-element";
 import { editor, IDisposable } from "monaco-editor/esm/vs/editor/editor.api";
+import * as sampleCode from "./pwab-code";
 
 @customElement("pwab-monaco")
-export default class pwabmonaco extends LitElement {
+export class pwabmonaco extends LitElement {
   @property({ type: String, attribute: "monaco-id" })
   public monacoId: string;
 
@@ -10,7 +11,7 @@ export default class pwabmonaco extends LitElement {
   theme: string = "lighter";
 
   @property({ type: String })
-  public code: string;
+  public code: sampleCode.framework;
 
   @property({ type: Boolean, attribute: "show-copy" })
   public showCopyButton: boolean = false;
@@ -141,7 +142,7 @@ export default class pwabmonaco extends LitElement {
   }
 
   update(changedProperties) {
-    this.createContainer();
+    this.createContainer(changedProperties);
     super.update(changedProperties);
   }
 
@@ -252,7 +253,7 @@ export default class pwabmonaco extends LitElement {
     this.requestUpdate();
   }
 
-  createContainer() {
+  createContainer(changedProperties: Map<string, string>) {
     const div = document.createElement("div");
     const body = document.getElementsByTagName("body")[0];
     div.id = this.monacoId;
@@ -264,7 +265,10 @@ export default class pwabmonaco extends LitElement {
     this.editor = (window as any).monaco.editor.create(
       document.getElementById(this.monacoId),
       {
-        value: this.editor ? this.editor.getValue() : this.code,
+        value:
+          this.editor && !changedProperties.has("code")
+            ? this.editor.getValue()
+            : this.getCode(),
         ...this.monacoOptions,
       }
     ) as editor.IStandaloneCodeEditor;
@@ -275,6 +279,10 @@ export default class pwabmonaco extends LitElement {
     return document
       .getElementsByTagName("body")[0]
       .removeChild(document.getElementById(this.monacoId));
+  }
+
+  getCode() {
+    return sampleCode[this.code];
   }
 
   rebindEvents() {
