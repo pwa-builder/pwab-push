@@ -32,13 +32,15 @@ export class pwabsamples extends LitElement {
   static get styles() {
     return css`
       .codeHeader {
-        padding-left: 1em;
-        padding-bottom: 1em;
-        padding-top: 14px;
+        padding-bottom: 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         z-index: 9999;
+      }
+
+      .codeHeader:not(:first) {
+        padding-top: 16px;
       }
       .codeHeader h3 {
         font-family: sans-serif;
@@ -55,8 +57,12 @@ export class pwabsamples extends LitElement {
         width: 20em;
       }
 
+      .pwab-sample {
+      }
+
       .code-sample {
         max-height: 600px;
+        margin: 0 16px;
         overflow: scroll;
       }
 
@@ -96,13 +102,14 @@ export class pwabsamples extends LitElement {
   }
 
   render() {
-    console.log(sampleCode);
-    console.log(sampleCode[this.code]);
+    const snippets = sampleCode[this.code];
+    const lastSnippet = snippets.length - 1;
 
-    return html`<div class="pwab-monaco">
-      ${sampleCode[this.code].map((sample) => {
+    return html`<div class="pwab-sample">
+      ${snippets.map((sample, i) => {
         return html`${this.codeHeader(sample)}
-          <pre class="code-sample">${sample.code}</pre> `;
+          <pre class="code-sample">${sample.code}</pre>
+          ${!lastSnippet ? html`<br />` : undefined}`;
       })}
     </div>`;
   }
