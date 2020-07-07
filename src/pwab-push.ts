@@ -616,8 +616,9 @@ export class pwabpush extends LitElement {
                   </div>
                 </div>
 
-                <button @click=${this.subscribe}>Subscribe</button>
-                <button @click=${this.unsubscribe}>Unsubscribe</button>
+                <!-- Testing Buttons -->
+                <!-- <button @click=${this.subscribe}>Subscribe</button> -->
+                <!-- <button @click=${this.unsubscribe}>Unsubscribe</button> -->
 
                 <div class="actionsBlock">
                   <pwab-samples code="${this.swCode}" show-copy> </pwab-samples>
