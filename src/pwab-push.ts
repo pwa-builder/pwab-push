@@ -339,9 +339,13 @@ export class pwabpush extends LitElement {
   }
 
   async createVapidKeys(): Promise<VapidKeys> {
-    const { keys }: PwabVapidResponse = await fetch(
-      this.url + "/create"
-    ).then((res) => res.json());
+    const { keys }: PwabVapidResponse = await fetch(this.url + "/create", {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => res.json());
 
     return {
       ...keys,
