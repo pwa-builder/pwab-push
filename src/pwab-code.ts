@@ -183,7 +183,7 @@ export const sendNotificationScript: CodeSample = {
 };
 
 export const vanilla = [vanillaCode, sendNotificationScript];
-export const react = [vanillaCode];
+export const react = [vanillaCode, sendNotificationScript];
 export const angular = [
   angularCommandLine,
   angularCode,
