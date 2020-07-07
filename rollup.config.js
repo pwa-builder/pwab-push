@@ -15,9 +15,9 @@ export default [{
     resolve(),
     minifyHTML(),
     minify(),
-    // strip({
-    //   functions: ['console.log']
-    // })
+    strip({
+      functions: ['console.log']
+    })
   ]
 }, {
   input: 'build/pwab-samples.js',
@@ -30,8 +30,8 @@ export default [{
     resolve(),
     minifyHTML(),
     minify(),
-    // strip({
-    //   functions: ['console.log']
-    // })
+    strip({
+      functions: ['console.log']
+    })
   ]
 }];
