@@ -107,7 +107,7 @@ export const angularCode: CodeSample = {
   }
 
   subscribeUser(subscriptionPayload) {
-    const response = await fetch(pushServiceUrl + '?action=subscribe', {
+    const response = await fetch("https://pwabuilder-api-prod.azurewebsites.net/push/subscribe", {
       method: 'post',
       headers: {
         'Content-type': 'application/json'
