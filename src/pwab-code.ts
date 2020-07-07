@@ -158,11 +158,11 @@ document.body.appendChild(el);
 };
 
 export const sendNotificationScript: CodeSample = {
-  title: "",
+  title: "Use this code to send notifications to the user",
   code: `async sendNotification() {
   try {
     const response: PwabNotificationResponse = await fetch(
-      "https://pwabuilder-api-pre.azurewebsites.net//push/send",
+      "https://pwabuilder-api-pre.azurewebsites.net/push/send",
       {
         method: "POST",
         cache: "no-cache",
