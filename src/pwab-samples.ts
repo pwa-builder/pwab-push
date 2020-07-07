@@ -39,7 +39,7 @@ export class pwabsamples extends LitElement {
         z-index: 9999;
       }
 
-      .codeHeader:not(:first) {
+      .codeHeader:not(:first-child) {
         padding-top: 16px;
       }
       .codeHeader h3 {
