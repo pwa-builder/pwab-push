@@ -12,7 +12,7 @@ export interface CodeSample {
 
 export const vanillaCode: CodeSample = {
   title: "Add this code to your service worker",
-  code: `// Add these functions to prompt the user to subscribe to the pwabuilder push notification server using the pwabuilder.
+  code: `// This code is used to register your user to the notification service.
 async function subscribeUser() {
   try {
     const vapidPublicKey = ""; // get public key here
@@ -32,7 +32,7 @@ async function subscribeUser() {
       applicationServerKey: convertedVapidKey
     });
 
-    const response = await fetch(pushServiceUrl + '?action=subscribe', {
+    const response = await fetch("https://pwabuilder-api-prod.azurewebsites.net/push/subscribe", {
       method: 'post',
       headers: {
         'Content-type': 'application/json'
@@ -66,7 +66,7 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-// omit if you want to control when you prompt the user to subscribe
+// how to trigger the permissions prompt.
 subscribeUser();
 `,
 };
@@ -86,19 +86,24 @@ export const angularCode: CodeSample = {
   title: "Make these modifications to your AppComponent",
   code: `export class AppComponent {
   ...
-  readonly VAPID_PUBLIC_KEY = "public key from above";
+  readonly VAPID_PUBLIC_KEY = ""; // vapid public key
 
   constructor(
     ...
-    private swPushL SwPush,
+    private swPush: SwPush,
     ...
   ) {}
 
-  subscribe() {
-    this.swPush.requestSubscription({
-      serverPublicKey: this.VAPID_PUBLIC_KEY
-    })
-    .then(sub => this.subscribeUser)
+  async subscribe() {
+    try {
+      const sub = await this.swPush.requestSubscription({
+        serverPublicKey: this.VAPID_PUBLIC_KEY
+      });
+
+      await this.subscribeUser(sub);
+    } catch (e) {
+      // handle exceptions here
+    }
   }
 
   subscribeUser(subscriptionPayload) {
@@ -133,20 +138,6 @@ export const angularCode: CodeSample = {
 }`,
 };
 
-export const angularJson: CodeSample = {
-  title: "Add to angular.json",
-  code: `"assets": {
-    ...,
-    src/pwabuilder-sw.js
-  }
-`,
-};
-
-export const angularRegister: CodeSample = {
-  title: "",
-  code: ``,
-};
-
 export const landingScript: CodeSample = {
   title: "",
   code: `// Add this below content to your HTML page inside a <script type="module"></script> tag, or add the js file to your page at the very top to register service worker
@@ -162,7 +153,7 @@ export const sendNotificationScript: CodeSample = {
   code: `async sendNotification() {
   try {
     const response: PwabNotificationResponse = await fetch(
-      "https://pwabuilder-api-pre.azurewebsites.net/push/send",
+      "https://pwabuilder-api-prod.azurewebsites.net/push/send",
       {
         method: "POST",
         cache: "no-cache",
@@ -196,7 +187,6 @@ export const react = [vanillaCode];
 export const angular = [
   angularCommandLine,
   angularCode,
-  angularRegister,
   sendNotificationScript,
 ];
 export const vue = [vanillaCode, sendNotificationScript];
