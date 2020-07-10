@@ -117,10 +117,11 @@ export class pwabsamples extends LitElement {
   codeHeader(sample: sampleCode.CodeSample) {
     const copyButton = this.showCopyButton
       ? html`<button
+          class="copyButton"
+          aria-label="Copy button to ${sample.title}"
           @click="${() => {
             this.copy(sample);
           }}"
-          class="copyButton"
         >
           <i class="fas fa-copy platformIcon"></i>
           Copy
