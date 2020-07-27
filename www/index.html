@@ -1,21 +1,29 @@
 <html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
 
-<head>
+    <link rel="manifest" href="manifest.json" />
+    <script
+      data-n-head="true"
+      src="./pwabuilder-sw-register.js"
+      type="module"
+    ></script>
+    <script src="./monaco/app.bundle.js"></script>
+  </head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-  <link rel="manifest" href="manifest.json" />
-
-</head>
-
-<body>
-
-  <pwab-push></pwab-push>
-
-  <script type="module">
-    import '../build/pwab-push.js';
-  </script>
-
-</body>
-
+  <body>
+    <!-- url="http://localhost:3333/push"; // local -->
+    <!-- url="https://pwabuilder-api-pre.azurewebsites.net/push"; // dev -->
+    <!-- url="https://pwabuilder-api-prod.azurewebsites.net/push"; // production -->
+    <pwab-push url="http://localhost:3333/push"
+      ><h1>Testing, Testing, 123</h1></pwab-push
+    >
+    <script type="module">
+      import "../build/pwab-push.js";
+      import "../build/pwab-samples.js";
+    </script>
+  </body>
 </html>

@@ -1,0 +1,23 @@
+{
+  "dir": "ltr",
+  "lang": "EN",
+  "name": "Progressive Web Apps Builder",
+  "scope": "/",
+  "display": "standalone",
+  "start_url": "/",
+  "short_name": "PWABuilder",
+  "theme_color": "#000000",
+  "description": "All the tools you need to build and deploy your Progressive Web Apps.",
+  "orientation": "any",
+  "background_color": "#000000",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "icons": [],
+  "features": [
+    "Test your PWA",
+    "Package your PWA for app stores",
+    "Find useful components for your PWA",
+    "Generate a manifest and service worker"
+  ],
+  "screenshots": []
+}
