@@ -96,7 +96,11 @@ export class pwabpush extends LitElement {
       }
 
       .stepTextWrapper {
+        width: 100%;
+        border: none;
+        background-color: transparent;
         display: flex;
+        align-content: flex-start;
         align-items: center;
         cursor: pointer;
       }
@@ -499,14 +503,17 @@ export class pwabpush extends LitElement {
 
           <div id="instructionsList">
             <div class="step open" id="stepOne">
-              <div
+              <button
                 class="stepTextWrapper"
+                aria-labelledby="step1Header"
                 @click="${() => this.openStep("stepOne")}"
               >
                 <img src="/Images/server.png" />
 
-                <h4><span class="stepText">Step 1:</span> Setup server Side</h4>
-              </div>
+                <h4 id="step1Header">
+                  <span class="stepText">Step 1:</span> Setup server Side
+                </h4>
+              </button>
 
               <div class="formWrapper">
                 <p>
@@ -520,9 +527,10 @@ export class pwabpush extends LitElement {
                     </label>
 
                     <input
-                      type="email"
                       id="emailInput"
                       name="emailInput"
+                      type="email"
+                      aria-label="email to register for push privileges"
                       placeholder="janedoe@something.com"
                       .value=${this.userEmail}
                     />
@@ -530,6 +538,7 @@ export class pwabpush extends LitElement {
 
                   <button
                     id="emailButton"
+                    arial-label="Add email"
                     @click=${this.addEmail}
                     ?disabled=${this.validUserEmail()}
                   >
@@ -556,6 +565,7 @@ export class pwabpush extends LitElement {
                   <div class="actionButtons">
                     <button
                       class="primaryAction"
+                      aria-label="Register email and generate VAPID keys"
                       @click=${this.clickGenerateAndRegisterButton}
                     >
                       Generate and Register VAPID Keys
@@ -566,14 +576,17 @@ export class pwabpush extends LitElement {
             </div>
 
             <div class="step" id="stepTwo">
-              <div
-                @click="${() => this.openStep("stepTwo")}"
+              <button
                 class="stepTextWrapper"
+                aria-labelledby="step2Header"
+                @click="${() => this.openStep("stepTwo")}"
               >
                 <img src="/Images/client.png" />
 
-                <h4><span class="stepText">Step 2:</span> Setup client Side</h4>
-              </div>
+                <h4 id="step2Header">
+                  <span class="stepText">Step 2:</span> Setup client Side
+                </h4>
+              </button>
 
               <div class="formWrapper">
                 <p>
@@ -592,9 +605,10 @@ export class pwabpush extends LitElement {
                     </label>
 
                     <select
-                      @change=${this.selectProject}
                       id="projectSelect"
                       name="projectSelect"
+                      aria-label="select project type"
+                      @change=${this.selectProject}
                     >
                       <option value="${framework.react}">React</option>
                       <option value=${framework.vue}>Vue</option>
@@ -615,16 +629,17 @@ export class pwabpush extends LitElement {
             </div>
 
             <div class="step" id="stepThree">
-              <div
-                @click="${() => this.openStep("stepThree")}"
+              <button
                 class="stepTextWrapper"
+                aria-labelledby="step3Header"
+                @click="${() => this.openStep("stepThree")}"
               >
                 <img src="/Images/test.png" />
 
-                <h4>
+                <h4 id="step3Header">
                   <span class="stepText">Step 3:</span> Send test notification
                 </h4>
-              </div>
+              </button>
 
               <div class="formWrapper">
                 <div id="stepThreeActions" class="actionsBlock">
@@ -637,6 +652,7 @@ export class pwabpush extends LitElement {
                       type="text"
                       id="titleInput"
                       name="titleInput"
+                      aria-label="Notification title"
                       placeholder="notification title"
                       .value="${this.notificationTitle}"
                     />
@@ -651,6 +667,7 @@ export class pwabpush extends LitElement {
                       type="text"
                       id="bodyInput"
                       name="bodyInput"
+                      aria-label="Notification body"
                       placeholder="notification body"
                       .value="${this.notificationBody}"
                     />
@@ -664,13 +681,18 @@ export class pwabpush extends LitElement {
                       type="text"
                       id="iconUrlInput"
                       name="icon-url-input"
+                      aria-label="icon url"
                       placeholder="https://www.example/images/icon.png"
                       .value="${this.notificationIcon}"
                     />
                   </div>
                 </div>
 
-                <button id="sendButton" @click=${this.sendNotification}>
+                <button
+                  id="sendButton"
+                  aria-label="send notification button"
+                  @click=${this.sendNotification}
+                >
                   Send Notification
                 </button>
               </div>
