@@ -92,7 +92,7 @@ export class pwabpush extends LitElement {
       }
 
       #rightColumn img {
-        width: 400px;
+        width: 100%;
       }
 
       .stepTextWrapper {
@@ -490,21 +490,12 @@ export class pwabpush extends LitElement {
         <section id="leftColumn">
           <h3>Web Push Notifications</h3>
 
-          <p id="introText">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-            faucibus luctus libero sit amet sodales. Vivamus dui ex, luctus et
-            condimentum ut, aliquam in nibh. Sed eleifend accumsan ante, sed
-            elementum urna porttitor gravida. Quisque lobortis ut arcu ac
-            condimentum. Proin sit amet viverra ex. Sed felis metus, malesuada
-            sit amet dolor ac, tempus posuere felis. Praesent faucibus pretium
-            aliquam. Suspendisse a mauris eros. Aenean malesuada tortor lectus,
-            imperdiet mattis sem venenatis sed. Vestibulum augue tellus, ornare
-            sit amet sapien ut, placerat vehicula dolor. Mauris at tempus purus,
-            a aliquam sapien. Suspendisse et tempus lectus. Quisque sit amet
-            euismod tellus. Donec a ultrices diam. Ut tempor erat nec lacus
-            tempus, eget iaculis orci suscipit. Nullam tristique quis dolor
-            semper sodales.
-          </p>
+          <div id="introText">
+            <p>Welcome to the Push Notifications PWA Builder service. Push message can help you achieve better engagement for your PWA.</p>
+            <p>It goes without saying that push notifications expand your reach to your users in a timely, power-efficient and dependable way. Users are re-engaged with customized and relevant content that will have them coming back for more.</p>
+            <p>To do to that, you normally need to setup a small backend service to enable push notifications and follow a complete procedure to create various elements to make it works. You can know more about this great feature by testing our <a href="https://webpushdemo.azurewebsites.net/">official Microsoft Edge demo page</a> which also includes detailed explanations on how to setup your own server using node.js.</p> 
+            <p>But our goal is to simplify this process by letting you experiment the Web Push Notifications service using our backend server acting as the relay for the notifications of your PWA. In just only quick 3 steps, you’ll then be able to test this feature and decide if you’d like to then deploy it to your production server.</p>           
+          </div>
 
           <div id="instructionsList">
             <div class="step open" id="stepOne">
@@ -519,10 +510,7 @@ export class pwabpush extends LitElement {
 
               <div class="formWrapper">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-                  faucibus luctus libero sit amet sodales. Vivamus dui ex,
-                  luctus et condimentum ut, aliquam in nibh. Sed eleifend
-                  accumsan ante, sed elementum urna porttitor gravida.
+                First, we need to generate <a href="https://tools.ietf.org/html/draft-ietf-webpush-vapid-00">VAPID</a> keys for you. Please provide your email address and keep the generated keys associated with it preciously, we do not keep it for you!
                 </p>
 
                 <div id="emailInputWrapper">
@@ -691,8 +679,7 @@ export class pwabpush extends LitElement {
         </section>
 
         <section id="rightColumn">
-          <img src="/Images/top.png" />
-          <img src="/Images/bottom.png" />
+          <img src="/Images/pushdiagram.svg" />
         </section>
       </div>
     `;
